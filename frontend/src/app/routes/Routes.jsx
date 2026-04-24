@@ -4,6 +4,7 @@ import App from "../../App";
 import { UserLayout, AdminLayout } from "../layouts";
 import { Home } from "../../pages";
 import { ProductDetailPage, ProductListPage } from "../../features/products";
+import { ProfilePage } from "../../features/profile";
 import { CartPage } from "../../features/cart";
 import { AboutPage } from "../../features/about";
 import { LoginPage, SignupPage } from "../../features/auth";
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
           { path: "cart", element: <CartPage /> },
           { path: "/login", element: <LoginPage /> },
           { path: "/signup", element: <SignupPage /> },
+          { path: "/profile", element: <ProfilePage /> },
           { path: "about", element: <AboutPage />}
         ],
       },

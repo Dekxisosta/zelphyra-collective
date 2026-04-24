@@ -15,15 +15,15 @@
 }
 
 [data-theme="dark"] {
-  --color-primary: #e11d48;
+  --color-primary: #ec9728;
   --color-primary-hover: #be123c;
 
   --color-bg: #0f0f12;
-  --color-surface: #17171c;
-  --color-border: rgba(255, 255, 255, 0.08);
+  --color-surface: #000000;
+  --color-border: rgba(255, 255, 255, 0.144);
 
-  --color-text: #f4f4f5;
-  --color-text-muted: #a1a1aa;
+  --color-text: #ffffff;
+  --color-text-muted: #ddd6cb;
 
   --color-accent: #fbbf24;
 }

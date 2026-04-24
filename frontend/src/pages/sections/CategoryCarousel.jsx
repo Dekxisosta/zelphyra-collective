@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import categories from "../../data/categories.json";
+import categories from "../../test/categories.json";
 
 export default function CategoryCarousel() {
   return (

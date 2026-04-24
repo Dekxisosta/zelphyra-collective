@@ -1,38 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Chip, SkeletonGrid, CategoryPills, Pagination } from "../components";
 import { useProducts, ErrorComponent, Card } from "../../../shared";
-
-const slugify = (text) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
+import { slugify, useProductFilters } from "../../../shared";
 
 export default function ProductListPage() {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [searchInput, setSearchInput] = useState("");
-
-  const search = searchParams.get("search") || "";
-  const category = searchParams.get("category") || "all";
-  const sort = searchParams.get("sort") || "newest";
-  const page = Number(searchParams.get("page") || 1);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setSearchParams((prev) => {
-        const params = new URLSearchParams(prev);
-        if (searchInput) params.set("search", searchInput);
-        else params.delete("search");
-        params.set("page", 1);
-        return params;
-      });
-    }, 300);
-    return () => clearTimeout(t);
-  }, [searchInput, setSearchParams]);
+  
+  const {
+    search,
+    category,
+    sort,
+    page,
+    searchInput,
+    setSearchInput,
+    updateFilter,
+  } = useProductFilters();
 
   const { products, categories, totalPages, loading, error } = useProducts({
     search,
@@ -41,22 +24,10 @@ export default function ProductListPage() {
     page,
   });
 
-  const updateFilter = (key, value) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      if (!value || value === "all") params.delete(key);
-      else params.set(key, value);
-      if (key !== "page") params.set("page", 1);
-      return params;
-    });
-  };
-
   if (loading) return <SkeletonGrid />;
 
   if (error) {
-    return (
-      <ErrorComponent detail={error} />
-    );
+    return <ErrorComponent detail={error} />;
   }
 
   return (

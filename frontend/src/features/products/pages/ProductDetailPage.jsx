@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {Reviews} from "../sections";
-import products from "../../../data/products.json";
+import {ReviewsSection} from "../sections";
+import products from "../../../test/products.json";
 
 const formatSold = (num) => {
   if (num >= 1000) return (num / 1000).toFixed(1) + "k";

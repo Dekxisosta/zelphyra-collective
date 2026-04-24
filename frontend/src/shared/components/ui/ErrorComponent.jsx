@@ -1,95 +1,172 @@
 import errorIllustration from "/images/error_icon2.png";
+import { ERROR_MAP } from "../../../shared";
 
-export default function ErrorComponent({
-  code = "ERR_500 · INTERNAL_SERVER_ERROR",
-  title = "Something went wrong",
-  message = "We ran into an unexpected error while processing your request. Our team has been notified. Please try again or go back home.",
-  detail = "TypeError: Cannot read properties of undefined (reading 'data')\nat fetchUser · api/users.ts:42:18",
-  onRetry,
-  onHome,
+export default function ErrorComponent({ 
+  type = "DEFAULT", 
+  onRetry, 
+  onHome 
 }) {
+  const { code, title, message } = ERROR_MAP[type] || ERROR_MAP.DEFAULT;
+
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      minHeight: "320px",
-      padding: "2rem 1.25rem",
-      textAlign: "center",
-      fontFamily: "inherit",
-    }}>
-      
-      <div style={{ position: "relative", width: 80, height: 80, marginBottom: "1rem" }}>
-        <img src={errorIllustration} alt="Error" style={{ width: 80, height: 80 }} />
+    <div style={styles.container}>
+      {/* Top Banner Section - Branded with Accent Color */}
+      <div style={styles.banner}>
+        <div style={styles.bannerContent}>
+          <div style={styles.titleWrapper}>
+            <h1 style={styles.mainTitle}>SOMETHING</h1>
+            <h1 style={styles.mainTitle}>WENT WRONG . . .</h1>
+          </div>
+          <img src={errorIllustration} alt="Error Illustration" style={styles.icon} />
+        </div>
       </div>
 
-      <span style={{
-        display: "inline-block", marginBottom: "0.75rem",
-        padding: "0.2rem 0.6rem", borderRadius: "calc(var(--radius) / 2)",
-        border: "1px solid var(--color-primary)",
-        background: "color-mix(in srgb, var(--color-primary) 10%, transparent)",
-        color: "var(--color-primary)", fontFamily: "monospace",
-        fontSize: "0.65rem", letterSpacing: "0.07em",
-      }}>
-        {code}
-      </span>
+      {/* Bottom Data Section - Adapts to Theme */}
+      <div style={styles.footer}>
+        <div style={styles.statusGroup}>
+          <div style={styles.iconMisc}> XXXXX XXXXX</div>
+          <div style={styles.divider} />
+          <span style={styles.errorCode}>SYSTEM_LOG ::: {code}</span>
+        </div>
 
-      {/* Title */}
-      <h2 style={{ fontSize: "1rem", fontWeight: 600, color: "var(--color-text)", margin: "0 0 0.35rem" }}>
-        {title}
-      </h2>
+        <div style={styles.content}>
+          <p style={styles.message}>{message}</p>
+        </div>
 
-      {/* Message */}
-      <p style={{
-        fontSize: "0.8rem", color: "var(--color-text-muted)",
-        lineHeight: 1.6, maxWidth: "320px", margin: "0 0 1.25rem",
-      }}>
-        {message}
-      </p>
-
-      {/* Actions */}
-      {(onRetry || onHome) && (
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: detail ? "1.25rem" : 0 }}>
+        <div style={styles.actions}>
           {onRetry && (
-            <button onClick={onRetry} style={{
-              padding: "0.45rem 1.1rem", borderRadius: "var(--radius)", border: "none",
-              background: "var(--color-primary)", color: "#fff",
-              fontSize: "0.8rem", fontWeight: 500, fontFamily: "inherit", cursor: "pointer",
-            }}
-              onMouseEnter={e => e.currentTarget.style.background = "var(--color-primary-hover)"}
-              onMouseLeave={e => e.currentTarget.style.background = "var(--color-primary)"}
-            >
-              Try again
+            <button onClick={onRetry} style={styles.btnPrimary}>
+              RETRY_CONNECTION
             </button>
           )}
           {onHome && (
-            <button onClick={onHome} style={{
-              padding: "0.45rem 1.1rem", borderRadius: "var(--radius)",
-              border: "1px solid var(--color-border)", background: "var(--color-surface)",
-              color: "var(--color-text-muted)", fontSize: "0.8rem", fontWeight: 500,
-              fontFamily: "inherit", cursor: "pointer",
-            }}>
-              Go home
+            <button onClick={onHome} style={styles.btnSecondary}>
+              RETURN_HOME
             </button>
           )}
         </div>
-      )}
-
-      {/* Detail / stack trace */}
-      {detail && (
-        <pre style={{
-          padding: "0.6rem 1rem", borderRadius: "var(--radius)",
-          border: "1px solid var(--color-border)", background: "var(--color-surface)",
-          fontFamily: "monospace", fontSize: "0.65rem", color: "var(--color-text-muted)",
-          textAlign: "left", lineHeight: 1.7, maxWidth: "360px", width: "100%",
-          whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0,
-        }}>
-          {detail}
-        </pre>
-      )}
-
-      <style>{`@keyframes ping { 75%,100% { transform: scale(1.6); opacity: 0; } }`}</style>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    width: "100%",
+    maxWidth: "800px", // Increased width for better proportions
+    margin: "2rem auto",
+    backgroundColor: "var(--color-bg)",
+    overflow: "hidden",
+    border: "2px solid var(--color-border)",
+    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2)",
+  },
+  banner: {
+    backgroundColor: "var(--color-accent)",
+    padding: "3rem 2.5rem", // More padding for "bigger" feel
+    position: "relative",
+    minHeight: "240px",
+    display: "flex",
+    alignItems: "center",
+    backgroundImage: "repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 10px)",
+  },
+  bannerContent: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "2rem",
+  },
+  titleWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+  },
+  mainTitle: {
+    fontSize: "4rem",
+    fontWeight: "900",
+    lineHeight: "0.9",
+    color: "#000000",
+    margin: 0,
+    letterSpacing: "-0.06em",
+    textAlign: "left",
+    textTransform: "uppercase",
+  },
+  icon: {
+    width: "220px", // Significantly bigger illustration
+    height: "auto",
+    filter: "drop-shadow(6px 6px 0px rgba(0,0,0,0.15))",
+    // Slight negative margin if your image has white space around it
+    marginRight: "-1rem", 
+  },
+  footer: {
+    backgroundColor: "var(--color-surface)",
+    color: "var(--color-text)",
+    padding: "2rem 2.5rem",
+    textAlign: "left",
+  },
+  statusGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+    marginBottom: "1.5rem",
+  },
+  iconMisc: {
+    fontSize: "1.2rem",
+    opacity: 0.9,
+  },
+  divider: {
+    width: "2px",
+    height: "20px",
+    backgroundColor: "var(--color-border)",
+    opacity: 0.3,
+  },
+  errorCode: {
+    color: "var(--color-accent)",
+    fontSize: "1rem",
+    fontWeight: "800",
+    fontFamily: "monospace",
+    letterSpacing: "2px",
+  },
+  content: {
+    marginBottom: "2.5rem",
+  },
+  subTitle: {
+    fontSize: "1.5rem", // Bigger sub-title
+    fontWeight: "800",
+    color: "var(--color-text)",
+    marginBottom: "0.75rem",
+    textTransform: "uppercase",
+  },
+  message: {
+    fontSize: "1rem",
+    color: "var(--color-text-muted)",
+    maxWidth: "550px",
+    margin: 0,
+    lineHeight: "1.6",
+  },
+  actions: {
+    display: "flex",
+    gap: "1rem",
+  },
+  btnPrimary: {
+    padding: "0.8rem 1.5rem",
+    backgroundColor: "var(--color-primary)",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "calc(var(--radius) / 2)",
+    fontWeight: "800",
+    fontSize: "0.85rem",
+    cursor: "pointer",
+    letterSpacing: "0.05em",
+  },
+  btnSecondary: {
+    padding: "0.8rem 1.5rem",
+    backgroundColor: "transparent",
+    color: "var(--color-text-muted)",
+    border: "2px solid var(--color-border)",
+    borderRadius: "calc(var(--radius) / 2)",
+    fontWeight: "800",
+    fontSize: "0.85rem",
+    cursor: "pointer",
+  },
+};

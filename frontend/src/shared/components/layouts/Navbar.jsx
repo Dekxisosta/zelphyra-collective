@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import cart from "../../../assets/images/cart.png";
-import user from "../../../data/mock-profile.gif";
+import user from "../../../test/mock-profile.gif";
 import logo_light from "../../../assets/images/logo-light.png";
 import logo_dark from "../../../assets/images/logo-dark.png"
 
@@ -13,6 +13,7 @@ export default function Navbar() {
   );
   const [scrolled, setScrolled] = useState(false);
 
+  const hamburgerRef = useRef(null);
   const menuRef = useRef(null);
   const location = useLocation();
 
@@ -20,6 +21,7 @@ export default function Navbar() {
     { to: "/", label: "Home" },
     { to: "/products", label: "Products" },
     { to: "/about", label: "About" },
+    { to: "/profile", label: "Profile" },
   ];
 
   useEffect(() => {
@@ -35,7 +37,12 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+  if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        hamburgerRef.current &&
+        !hamburgerRef.current.contains(e.target)
+      ) {
         setOpen(false);
       }
     };
@@ -143,12 +150,8 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CENTER LOGO */}
-          <Link
-            to="/"
-            className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2"
-          >
-            <img src={theme === "light" ? logo_light : logo_dark} className="h-16 w-auto object-contain" alt="logo" />
+          <Link to="/" className="flex items-center">
+            <img src={logo_dark} className="h-10 w-auto pr-3" alt="logo" />
           </Link>
 
           {/* RIGHT ACTIONS */}
@@ -176,9 +179,10 @@ export default function Navbar() {
               />
             </Link>
           </div>
-
+          
           {/* MOBILE HAMBURGER */}
           <button
+            ref={hamburgerRef}
             className="md:hidden ml-auto flex flex-col gap-1"
             onClick={() => setOpen(!open)}
           >
@@ -190,7 +194,9 @@ export default function Navbar() {
               />
             ))}
           </button>
+          
         </div>
+        
       </div>
 
       {/* MOBILE MENU */}
@@ -224,11 +230,11 @@ export default function Navbar() {
 
           <Link to="#" onClick={() => setOpen(false)} className="text-sm opacity-70"
             style={{ color: "var(--color-text)" }}>
-            🔔 Notifications
+            Notifications
           </Link>
           <Link to="#" onClick={() => setOpen(false)} className="text-sm opacity-70"
             style={{ color: "var(--color-text)" }}>
-            ❓ Help
+            Help
           </Link>
           <Link to="/login" onClick={() => setOpen(false)} className="text-sm"
             style={{ color: "var(--color-text)" }}>
@@ -237,44 +243,6 @@ export default function Navbar() {
           <Link to="/signup" onClick={() => setOpen(false)} className="text-sm font-medium"
             style={{ color: "var(--color-primary)" }}>
             Sign Up
-          </Link>
-
-          <button
-            onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-            className="text-sm px-3 py-2 rounded-lg border w-fit"
-            style={{
-              borderColor: "var(--color-border)",
-              color: "var(--color-text)",
-            }}
-          >
-            {theme === "light" ? "Dark Mode" : "Light Mode"}
-          </button>
-
-          {/* Mobile cart with badge */}
-          <Link
-            to="/cart"
-            onClick={() => setOpen(false)}
-            className="relative w-fit p-1"
-          >
-            <img src={cart} className="w-7 h-7" alt="cart" />
-            <span
-              className="absolute -top-1 -right-1 w-4 h-4 text-[10px] font-bold rounded-full flex items-center justify-center"
-              style={{
-                backgroundColor: "var(--color-primary)",
-                color: "white",
-              }}
-            >
-              3
-            </span>
-          </Link>
-
-          {/* Mobile user avatar */}
-          <Link to="/profile" onClick={() => setOpen(false)}>
-            <img
-              src={user}
-              className="w-8 h-8 opacity-70 hover:opacity-100 transition rounded-full"
-              alt="profile"
-            />
           </Link>
 
         </div>

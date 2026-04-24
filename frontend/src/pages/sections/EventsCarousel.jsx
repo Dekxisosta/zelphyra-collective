@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import events from "../../data/events.json";
+import events from "../../test/events.json";
 
 export default function EventsCarousel() {
   const scrollRef = useRef(null);
