@@ -1,64 +1,99 @@
-const shippingOptions = [
+const returnReasons = [
   {
-    name: "Standard Shipping",
-    duration: "3–7 Business Days",
-    price: "₱99",
-    note: "Free on orders over ₱1,500",
+    reason: "Damaged or Defective Item",
+    eligible: true,
+    note: "Item arrived broken, scratched, or non-functional.",
   },
   {
-    name: "Express Shipping",
-    duration: "1–3 Business Days",
-    price: "₱199",
-    note: "Available in Metro Manila only",
+    reason: "Wrong Item Received",
+    eligible: true,
+    note: "The item delivered does not match your order.",
   },
   {
-    name: "Same-Day Delivery",
-    duration: "Within the day",
-    price: "₱299",
-    note: "Order before 11AM, Metro Manila only",
+    reason: "Item Not as Described",
+    eligible: true,
+    note: "Significant difference from the product listing.",
+  },
+  {
+    reason: "Change of Mind",
+    eligible: false,
+    note: "We do not accept returns for buyer's remorse.",
+  },
+  {
+    reason: "Used or Opened Items",
+    eligible: false,
+    note: "Items that have been used or unsealed are not returnable.",
+  },
+];
+
+const steps = [
+  {
+    step: "01",
+    title: "Submit a Request",
+    body: "Email us at returns@zenlesscollective.ph within 7 days of receiving your order. Include your order number and photos of the item.",
+  },
+  {
+    step: "02",
+    title: "Wait for Approval",
+    body: "Our team will review your request within 2–3 business days and notify you via email whether it has been approved.",
+  },
+  {
+    step: "03",
+    title: "Ship the Item Back",
+    body: "Once approved, pack the item securely in its original packaging and drop it off at any accredited courier. We'll shoulder the return shipping for eligible cases.",
+  },
+  {
+    step: "04",
+    title: "Refund or Replacement",
+    body: "Upon receiving and inspecting the item, we'll process your refund or send a replacement within 5–7 business days.",
   },
 ];
 
 const policies = [
   {
-    title: "Processing Time",
-    body: "All orders are processed within 1–2 business days. Orders placed on weekends or holidays are processed the next business day.",
+    title: "Return Window",
+    body: "Returns must be requested within 7 days of the delivery date. Requests made after this window will not be accepted regardless of reason.",
   },
   {
-    title: "Shipping Coverage",
-    body: "We currently ship within the Philippines only. Delivery times may vary depending on your location and courier availability.",
+    title: "Item Condition",
+    body: "Returned items must be in their original condition — unused, unaltered, and in original packaging with all accessories and tags intact.",
   },
   {
-    title: "Tracking",
-    body: "Once your order ships, you'll receive a tracking number via email. Use it on our Track Order page or the courier's website.",
+    title: "Refund Method",
+    body: "Approved refunds are issued to your original payment method. GCash and bank transfers are processed within 5–7 business days. COD orders are refunded via GCash.",
   },
   {
-    title: "Failed Deliveries",
-    body: "If a delivery attempt fails, the courier will retry up to 2 times. After that, the package is returned to our warehouse.",
+    title: "Non-Returnable Items",
+    body: "Sealed collectibles, digital products, and items marked as Final Sale are strictly non-returnable and non-refundable.",
+  },
+  {
+    title: "Exchanges",
+    body: "We do not process direct exchanges. If you need a different item, return the original and place a new order once the refund is processed.",
   },
 ];
 
-export default function Shipping() {
+export default function Returns() {
   return (
-    <div style={{ backgroundColor: "var(--color-bg)", minHeight: "100vh", padding: "4rem 1.5rem" }}>
+    <div style={{minHeight: "100vh", padding: "4rem 1.5rem" }}>
       <div style={{ maxWidth: "720px", margin: "0 auto" }}>
 
+        {/* Header */}
         <p style={{ color: "var(--color-primary)", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
-          Delivery
+          After Your Order
         </p>
         <h1 style={{ color: "var(--color-text)", fontSize: "2.25rem", fontWeight: 800, marginBottom: "0.75rem" }}>
-          Shipping Information
+          Returns & Refunds
         </h1>
         <p style={{ color: "var(--color-text-muted)", marginBottom: "3rem" }}>
-          We partner with trusted local couriers to get your order to you as fast as possible.
+          Not satisfied with your order? We'll make it right. Read through our return policy below before submitting a request.
         </p>
 
-        {/* Shipping Options */}
+        {/* Eligibility */}
         <h2 style={{ color: "var(--color-text)", fontWeight: 700, fontSize: "1rem", marginBottom: "1rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-          Shipping Options
+          Return Eligibility
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "3rem" }}>
-          {shippingOptions.map((opt, i) => (
+          {returnReasons.map((item, i) => (
             <div key={i} style={{
               backgroundColor: "var(--color-surface)",
               border: "1px solid var(--color-border)",
@@ -71,10 +106,43 @@ export default function Shipping() {
               gap: "0.5rem",
             }}>
               <div>
-                <p style={{ color: "var(--color-text)", fontWeight: 700, fontSize: "0.95rem" }}>{opt.name}</p>
-                <p style={{ color: "var(--color-text-muted)", fontSize: "0.8rem", marginTop: "0.2rem" }}>{opt.duration} · {opt.note}</p>
+                <p style={{ color: "var(--color-text)", fontWeight: 700, fontSize: "0.95rem" }}>{item.reason}</p>
+                <p style={{ color: "var(--color-text-muted)", fontSize: "0.8rem", marginTop: "0.2rem" }}>{item.note}</p>
               </div>
-              <span style={{ color: "var(--color-primary)", fontWeight: 800, fontSize: "1rem" }}>{opt.price}</span>
+              <span style={{
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                padding: "0.25rem 0.75rem",
+                borderRadius: "999px",
+                backgroundColor: item.eligible ? "rgba(16, 185, 129, 0.12)" : "rgba(239, 68, 68, 0.12)",
+                color: item.eligible ? "#10b981" : "#ef4444",
+              }}>
+                {item.eligible ? "Eligible" : "Not Eligible"}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* How It Works */}
+        <h2 style={{ color: "var(--color-text)", fontWeight: 700, fontSize: "1rem", marginBottom: "1rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+          How It Works
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginBottom: "3rem" }}>
+          {steps.map((s, i) => (
+            <div key={i} style={{ display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
+              <span style={{
+                color: "var(--color-primary)",
+                fontWeight: 800,
+                fontSize: "1.5rem",
+                lineHeight: 1,
+                minWidth: "2.5rem",
+              }}>
+                {s.step}
+              </span>
+              <div>
+                <p style={{ color: "var(--color-text)", fontWeight: 700, marginBottom: "0.3rem" }}>{s.title}</p>
+                <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", lineHeight: 1.7 }}>{s.body}</p>
+              </div>
             </div>
           ))}
         </div>

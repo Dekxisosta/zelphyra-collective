@@ -1,4 +1,4 @@
-import {Card} from "../../shared";
+import {ProductCard} from "../../shared";
 
 export default function FeaturedGrid({ products }) {
   return (

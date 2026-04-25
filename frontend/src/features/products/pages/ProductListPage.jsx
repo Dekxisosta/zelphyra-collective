@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import { Chip, SkeletonGrid, CategoryPills, Pagination } from "../components";
-import { useProducts, ErrorComponent, Card } from "../../../shared";
+import { useProducts, ErrorComponent, ProductCard } from "../../../shared";
 import { slugify, useProductFilters } from "../../../shared";
 
 export default function ProductListPage() {

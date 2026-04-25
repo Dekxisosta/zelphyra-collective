@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { useTheme } from "../../../shared"; 
+import { useTheme } from "../../../features/theme"; 
 
 import cart from "../../../assets/images/cart.png";
 import user from "../../../test/mock-profile.gif";

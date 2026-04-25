@@ -1,7 +1,7 @@
-import { useProducts } from "../../shared/hooks/useProducts.js";
-import { FeaturedGrid } from "../components"; // Fixed from FeaturedGrid to match usage
+import { useProducts } from "../hooks/useProducts.js";
+import { FeaturedGrid } from "../../pages/components/index.js"; // Fixed from FeaturedGrid to match usage
 import { ArrowRight } from "lucide-react";
-import { ErrorComponent } from "../../shared";
+import { ErrorComponent } from "../index.js";
 
 export default function Featured() {
   const { products, loading, error } = useProducts({

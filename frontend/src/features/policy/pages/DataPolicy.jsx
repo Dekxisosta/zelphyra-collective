@@ -31,7 +31,7 @@ const sections = [
 
 export default function DataPolicy() {
   return (
-    <div style={{ backgroundColor: "var(--color-bg)", minHeight: "100vh", padding: "4rem 1.5rem" }}>
+    <div style={{minHeight: "100vh", padding: "4rem 1.5rem" }}>
       <div style={{ maxWidth: "720px", margin: "0 auto" }}>
 
         <p style={{ color: "var(--color-primary)", fontWeight: 700, fontSize: "0.75rem", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.5rem" }}>

@@ -1,4 +1,4 @@
-import { useTheme } from "../../../shared";
+import { useTheme } from "../../../features/theme";
 import { ERROR_MAP } from "../../constants/errorCodes";
 import retryDark from "../../../assets/images/retry-dark.png";
 import retryLight from "../../../assets/images/retry-light.png";
