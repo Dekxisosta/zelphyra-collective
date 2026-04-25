@@ -1,0 +1,51 @@
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.textured-border {
+  border: 8px solid transparent;
+  border-image: url('/textures/texture1.png') 40 round;
+
+  box-shadow: 
+    0 0px 6px rgba(0,0,0,0.05),
+    0 12px 30px rgba(0,0,0,0.10);
+  border-radius: 12px;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}

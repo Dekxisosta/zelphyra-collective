@@ -23,8 +23,8 @@ No clutter, no noise, just a focused interface and curated products.
 ### Clone the repository
 
 ```bash id="6v9q0c"
-git clone https://github.com/Dekxisosta/zelphyra-collective.git
-cd zelphyra-collective
+git clone https://github.com/Dekxisosta/zenless-collective.git
+cd zenless-collective
 ```
 
 ### Frontend
@@ -81,3 +81,9 @@ php artisan serve
     </td>
   </tr>
 </table>
+
+## Disclaimer
+
+This website is not affiliated with, endorsed by, or associated with HoYoverse or miHoYo in any way.
+All HoYoverse-related imagery, characters, and assets used on this site are the intellectual property of HoYoverse / miHoYo Co., Ltd.
+and are used solely for design portfolio and showcase purposes. No commercial use is intended.

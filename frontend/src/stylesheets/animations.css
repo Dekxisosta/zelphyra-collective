@@ -1,0 +1,9 @@
+@keyframes slowPan {
+  0% { transform: scale(1.05) translateX(0px); }
+  100% { transform: scale(1.08) translateX(-10px); }
+}
+@keyframes floatBot {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}

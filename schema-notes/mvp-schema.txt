@@ -3,20 +3,47 @@
 -- =========================
 CREATE TABLE users (
     id UUID PRIMARY KEY,
-
     email VARCHAR(150) UNIQUE NOT NULL,
     name VARCHAR(100),
-
     password_hash VARCHAR(255) NOT NULL,
-
-    role VARCHAR(20) DEFAULT 'user',
-    -- user | admin
-
+    role VARCHAR(20) DEFAULT 'user',             -- user | admin
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
+
+
     -- DESIGN DECISION:
-    -- Authentication is now fully handled internally.
+    -- Authentication is fully handled internally.
     -- Passwords must be hashed (bcrypt/argon2), never stored raw.
+);
+
+-- =========================
+-- ADDRESSES
+-- =========================
+CREATE TABLE addresses (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id UUID NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    label VARCHAR(50),
+    -- Home | Office | Other
+    full_name VARCHAR(150) NOT NULL,
+    phone VARCHAR(30),
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(100) NOT NULL,
+    province VARCHAR(100),
+    zip_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) DEFAULT 'Philippines',
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
+
+
+    -- DESIGN DECISION:
+    -- Stored separately to support multiple addresses per user.
+    -- is_default flags the address pre-selected at checkout.
+    -- Address is snapshotted to orders at checkout to preserve
+    -- historical accuracy if the user edits their address later.
 );
 
 -- =========================
@@ -26,8 +53,7 @@ CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(120) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     -- DESIGN DECISION:
     -- Flat category structure for MVP simplicity.
     -- No nested categories to reduce query complexity.
@@ -36,47 +62,100 @@ CREATE TABLE categories (
 -- =========================
 -- PRODUCTS
 -- =========================
+/*
+ * Changes from original:
+ * 1. Ratings and review_count removed — computed from reviews table post-MVP
+ * 2. sold and stock removed — normalized to product_inventory
+ * 3. Dimensions and weight removed for MVP simplicity
+ * 4. size introduced as ENUM for variant simplification
+ * 5. discount_percent corrected to DECIMAL(5,2) to support values like 0.15 to 100.00
+ * 6. pill replaced with a separate pills table with priority for frontend render
+ */
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-
     price DECIMAL(10,2) NOT NULL,
-    discount INT DEFAULT NULL,
-
-    rating DECIMAL(2,1) DEFAULT 0,
-    reviews_count INT DEFAULT 0,
-    sold INT DEFAULT 0,
-    stock INT DEFAULT 0,
-
+    discount_percent DECIMAL(5,2) DEFAULT NULL,          -- e.g. 10.00 = 10% off
     brand VARCHAR(100),
     sku VARCHAR(100) UNIQUE,
-
-    weight DECIMAL(6,2),
-
-    width DECIMAL(6,2),
-    height DECIMAL(6,2),
-    depth DECIMAL(6,2),
-
+    size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL,
     shipping_from VARCHAR(150),
     shipping_fee DECIMAL(10,2),
-    shipping_days VARCHAR(20),
-
-    image TEXT,
-    hover_image TEXT NULL,
-
-    pill VARCHAR(50) NULL,
-    -- e.g. trending | bestseller | new
-
+    shipping_days_min INT DEFAULT NULL,
+    shipping_days_max INT DEFAULT NULL,
+    pill_id INT DEFAULT NULL,
+    FOREIGN KEY (pill_id) REFERENCES pills(id)
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(id),
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    
+    
+    
+    -- DESIGN DECISION:
+    -- Variants simplified to a size ENUM for MVP.
+    -- shipping_days split into min/max INT for queryability.
+);
+
+-- =========================
+-- PILLS
+-- =========================
+CREATE TABLE pills (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(50) UNIQUE NOT NULL,
+    -- trending | bestseller | new | sale
+    priority INT NOT NULL DEFAULT 0,
+    -- lower number = higher display priority
+    -- e.g. 1 = show first, 3 = show last
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO pills (label, priority) VALUES
+    ('new', 1),
+    ('bestseller', 2),
+    ('trending', 3),
+    ('sale', 4);
+
+-- =========================
+-- PRODUCT INVENTORY
+-- =========================
+CREATE TABLE product_inventory (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT UNIQUE NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    stock INT DEFAULT 0,
+    sold INT DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    
+    
+    
+    -- DESIGN DECISION:
+    -- Separated from products to isolate quantity tracking concerns.
+    -- sold increments on order completion, stock decrements on checkout.
+);
+
+-- =========================
+-- PRODUCT IMAGES
+-- =========================
+CREATE TABLE product_images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    url TEXT NOT NULL,
+    is_primary BOOLEAN DEFAULT FALSE,
+    is_hover BOOLEAN DEFAULT FALSE,
+    sort_order INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
+
 
     -- DESIGN DECISION:
-    -- Variants and shipping logic are flattened for MVP simplicity.
-    -- Image URLs are stored from Supabase Storage (no backend file handling).
+    -- Replaces flat image/hover_image columns on products.
+    -- Satisfies 1NF — no repeating groups in a single column.
+    -- is_primary = main display image, is_hover = card hover effect.
+    -- sort_order controls gallery sequence.
 );
 
 -- =========================
@@ -84,23 +163,24 @@ CREATE TABLE products (
 -- =========================
 CREATE TABLE orders (
     id INT PRIMARY KEY AUTO_INCREMENT,
-
-    user_id UUID,
+    user_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-
     total_amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50) DEFAULT NULL,        -- mirrors payments.method for quick reference without a JOIN
+    status VARCHAR(30) DEFAULT 'pending',           -- pending | paid | shipped | completed | cancelled
+    
+    shipping_name VARCHAR(150),
+    shipping_phone VARCHAR(30),
+    shipping_address TEXT,                          -- snapshotted from addresses at checkout
+    
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
-    status VARCHAR(30) DEFAULT 'pending',
-    -- pending | paid | shipped | completed | cancelled
 
-    payment_method VARCHAR(50),
-    -- cod | card | etc
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     -- DESIGN DECISION:
-    -- Orders act as immutable transaction records.
-    -- Total amount is stored to avoid recalculation from product prices later.
+    -- Orders are immutable transaction records.
+    -- Total amount stored to avoid recalculation if prices change.
+    -- Shipping fields snapshotted so address edits don't affect history.
 );
 
 -- =========================
@@ -108,22 +188,82 @@ CREATE TABLE orders (
 -- =========================
 CREATE TABLE order_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
-
-    order_id INT,
-    product_id INT,
-
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id),
-
     product_name VARCHAR(255),
     product_price DECIMAL(10,2),
-
     quantity INT NOT NULL,
     subtotal DECIMAL(10,2) NOT NULL,
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
+
+
+
     -- DESIGN DECISION:
-    -- This is the implicit MANY-TO-MANY bridge between users and products.
-    -- Snapshot fields preserve historical accuracy even if product data changes later.
+    -- Implicit MANY-TO-MANY bridge between orders and products.
+    -- product_name and product_price are snapshotted to preserve
+    -- historical accuracy even if product data changes later.
+);
+
+-- =========================
+-- CART
+-- =========================
+CREATE TABLE cart (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id UUID UNIQUE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    
+    
+    
+    
+    -- DESIGN DECISION:
+    -- One cart per user enforced by UNIQUE on user_id.
+    -- Cart persists across sessions until checkout or manual removal.
+);
+
+-- =========================
+-- CART ITEMS
+-- =========================
+CREATE TABLE cart_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cart_id INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (cart_id) REFERENCES cart(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    quantity INT NOT NULL DEFAULT 1,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (cart_id, product_id)
+
+
+
+    -- DESIGN DECISION:
+    -- UNIQUE (cart_id, product_id) prevents duplicate entries.
+    -- Quantity updated in place rather than inserting duplicate rows.
+    -- Prices NOT snapshotted — pulled live from products at checkout.
+);
+
+-- =========================
+-- PAYMENTS
+-- =========================
+CREATE TABLE payments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT UNIQUE NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    amount DECIMAL(10,2) NOT NULL,
+    method VARCHAR(50) NOT NULL,                     -- cod | gcash | card | paypal
+    status VARCHAR(30) DEFAULT 'pending',            -- pending | completed | failed | refunded
+    transaction_ref VARCHAR(255) DEFAULT NULL,       -- external reference ID from payment gateway
+    paid_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
+    -- DESIGN DECISION:
+    -- Separated from orders to cleanly isolate payment concerns.
+    -- One payment per order enforced by UNIQUE on order_id.
+    -- transaction_ref stores the gateway reference for reconciliation.
+    -- paid_at is NULL until payment is confirmed.
 );
