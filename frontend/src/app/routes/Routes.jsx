@@ -8,6 +8,11 @@ import { ProfilePage } from "../../features/profile";
 import { CartPage } from "../../features/cart";
 import { AboutPage } from "../../features/about";
 import { LoginPage, SignupPage } from "../../features/auth";
+import { FAQPage } from "../../features/faq";
+import { Shipping } from "../../features/shipping";
+import { Returns } from "../../features/returns";
+import { DataPolicy } from "../../features/policy";
+import { TermsOfService } from "../../features/tos";
 
 import { DashboardPage, ProductsAdminPage } from "../../features/admin";
 
@@ -29,6 +34,14 @@ export const router = createBrowserRouter([
           { path: "/signup", element: <SignupPage /> },
           { path: "/profile", element: <ProfilePage /> },
           { path: "about", element: <AboutPage />},
+
+          { path: "/faq", element: <FAQPage /> },
+          { path: "/shipping", element: <Shipping /> },
+          { path: "/returns", element: <Returns /> },
+
+          { path: "/privacy-policy", element: <DataPolicy /> },
+          { path: "/terms-of-service", element: <TermsOfService /> },
+
           { path: "*", element: <ErrorComponent type="NOT_FOUND" /> }
         ],
       },

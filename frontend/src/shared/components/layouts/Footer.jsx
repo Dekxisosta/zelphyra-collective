@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const TwitterIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.4L6.2 22H3l7.3-8.4L1 2h6.3l4.4 5.8L18.9 2z" />
@@ -24,10 +26,27 @@ const MailIcon = (props) => (
 
 const Footer = () => {
   const footerLinks = {
-    Shop: ["All Products", "New Arrivals", "Best Sellers", "Collections"],
-    Help: ["FAQ", "Track Order", "Shipping", "Returns"],
-    Company: ["About Us", "Contact", "Careers"],
-    Legal: ["Privacy Policy", "Terms of Service"],
+    Shop: [
+      { label: "All Products", to: "/products" },
+      { label: "New Arrivals", to: "/products?filter=new" },
+      { label: "Best Sellers", to: "/products?filter=best" },
+      { label: "Collections", to: "/products?filter=collections" },
+    ],
+    Help: [
+      { label: "FAQ", to: "/faq" },
+      { label: "Track Order", to: "/track-order" },
+      { label: "Shipping", to: "/shipping" },
+      { label: "Returns", to: "/returns" },
+    ],
+    Company: [
+      { label: "About Us", to: "/about" },
+      { label: "Contact", to: "/contact" },
+      { label: "Careers", to: "/careers" },
+    ],
+    Legal: [
+      { label: "Privacy Policy", to: "/privacy-policy" },
+      { label: "Terms of Service", to: "/terms-of-service" },
+    ],
   };
 
   return (
@@ -71,17 +90,16 @@ const Footer = () => {
                 >
                   {title}
                 </h4>
-
                 <ul className="space-y-2">
                   {links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
+                    <li key={link.label}>
+                      <Link
+                        to={link.to}
                         className="text-sm transition-colors hover:text-red-500"
                         style={{ color: "var(--color-text-muted)" }}
                       >
-                        {link}
-                      </a>
+                        {link.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
