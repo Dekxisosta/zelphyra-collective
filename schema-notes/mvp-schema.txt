@@ -69,6 +69,7 @@ CREATE TABLE categories (
  * 3. Dimensions and weight removed for MVP simplicity
  * 4. size introduced as ENUM for variant simplification
  * 5. discount_percent corrected to DECIMAL(5,2) to support values like 0.15 to 100.00
+ * 6. pill replaced with a separate pills table with priority for frontend render
  */
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -83,7 +84,8 @@ CREATE TABLE products (
     shipping_fee DECIMAL(10,2),
     shipping_days_min INT DEFAULT NULL,
     shipping_days_max INT DEFAULT NULL,
-    pill VARCHAR(50) DEFAULT NULL,                       -- trending | bestseller | new
+    pill_id INT DEFAULT NULL,
+    FOREIGN KEY (pill_id) REFERENCES pills(id)
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,6 +97,25 @@ CREATE TABLE products (
     -- Variants simplified to a size ENUM for MVP.
     -- shipping_days split into min/max INT for queryability.
 );
+
+-- =========================
+-- PILLS
+-- =========================
+CREATE TABLE pills (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(50) UNIQUE NOT NULL,
+    -- trending | bestseller | new | sale
+    priority INT NOT NULL DEFAULT 0,
+    -- lower number = higher display priority
+    -- e.g. 1 = show first, 3 = show last
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO pills (label, priority) VALUES
+    ('new', 1),
+    ('bestseller', 2),
+    ('trending', 3),
+    ('sale', 4);
 
 -- =========================
 -- PRODUCT INVENTORY
