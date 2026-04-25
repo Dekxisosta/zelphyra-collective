@@ -34,7 +34,6 @@ const Footer = () => {
     ],
     Help: [
       { label: "FAQ", to: "/faq" },
-      { label: "Track Order", to: "/track-order" },
       { label: "Shipping", to: "/shipping" },
       { label: "Returns", to: "/returns" },
     ],
