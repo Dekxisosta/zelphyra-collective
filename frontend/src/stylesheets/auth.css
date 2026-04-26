@@ -1,0 +1,347 @@
+/* ─────────────────────────────────────────────────────────────
+   auth.css — scoped to .auth-layout only.
+   No global tag overrides. All tokens from colors.css.
+   ───────────────────────────────────────────────────────────── */
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* ── Brand panel ────────────────────────────────────────────── */
+.auth-brand {
+  position: relative;
+  padding: 4rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+
+.auth-brand__glow {
+  position: absolute;
+  right: -90px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(236,151,40,0.18) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.auth-brand__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+/* Uses global h1 (Fjalla One, uppercase) — size only */
+.auth-brand__heading {
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1.05;
+}
+
+.auth-brand__heading em {
+  color: var(--color-primary);
+  font-style: normal;
+}
+
+/* Uses global p color */
+.auth-brand__sub {
+  max-width: 320px;
+  line-height: 1.75;
+}
+
+.auth-brand__perks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-brand__perk {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.auth-brand__perk-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(236, 151, 40, 0.12);
+  border: 1px solid rgba(236, 151, 40, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.auth-brand__rule {
+  position: absolute;
+  right: 0;
+  top: 8%;
+  bottom: 8%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--color-border) 25%, var(--color-border) 75%, transparent);
+}
+
+/* ── Form panel ─────────────────────────────────────────────── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 3rem;
+  background: var(--color-bg);
+}
+
+.auth-form__card {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ── Tab switcher ───────────────────────────────────────────── */
+.auth-tabs {
+  display: flex;
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-border);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 9px 12px;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 500;
+  color: var(--color-text-muted) !important;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  line-height: 1.4;
+}
+
+.auth-tab:hover {
+  background: rgba(236, 151, 40, 0.07) !important;
+  color: var(--color-text) !important;
+}
+
+.auth-tab--active {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Form title — h2 from defaults.css ──────────────────────── */
+.auth-form__title {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.auth-form__subtitle {
+  margin-bottom: 1.75rem;
+}
+
+/* ── Fields ─────────────────────────────────────────────────── */
+.auth-field {
+  margin-bottom: 14px;
+}
+
+.auth-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.auth-field__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.auth-field__input {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--radius) * 0.8);
+  font-size: 14px;
+  color: var(--color-text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.auth-field__input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(236, 151, 40, 0.15);
+}
+
+.auth-field__input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.55;
+}
+
+/* ── Forgot link ────────────────────────────────────────────── */
+.auth-forgot {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: var(--color-primary);
+  margin: -4px 0 16px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.auth-forgot:hover { text-decoration: underline; }
+
+/* ── Password strength ──────────────────────────────────────── */
+.auth-strength {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.auth-strength__bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--color-border);
+  transition: background 0.25s ease;
+}
+
+.auth-strength__label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+  min-width: 40px;
+  transition: color 0.25s ease;
+}
+
+/* ── Banners ────────────────────────────────────────────────── */
+.auth-error {
+  font-size: 13px;
+  color: #dc2626;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(220, 38, 38, 0.07);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.auth-success {
+  font-size: 13px;
+  color: #16a34a;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(22, 163, 74, 0.07);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* ── Submit button — extends global button ──────────────────── */
+.auth-submit {
+  width: 100%;
+  padding: 13px;
+  font-size: 14px !important;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Footer text ────────────────────────────────────────────── */
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 1.5rem;
+}
+
+.auth-terms {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 14px;
+  line-height: 1.7;
+}
+
+.auth-link {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.auth-link:hover { text-decoration: underline; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .auth-layout { grid-template-columns: 1fr; }
+  .auth-brand  { display: none; }
+  .auth-form   { padding: 2.5rem 1.5rem; min-height: calc(100vh - 56px); }
+}
+
+/* ── Password peeker ────────────────────────────────────────── */
+.auth-field__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-field__input--peekable {
+  padding-right: 42px;
+}
+
+.auth-peek {
+  position: absolute;
+  right: 12px;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px !important;
+  transition: color 0.15s;
+}
+
+.auth-peek:hover {
+  background: transparent !important;
+  color: var(--color-text) !important;
+}
