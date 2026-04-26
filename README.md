@@ -101,6 +101,58 @@ and clean UI composition with TailwindCSS and Lucide React.
  
 ---
 
+
+## 📁 Frontend Structure
+
+```
+src/
+├── app/                        # App-level setup (router, providers, config)
+├── assets/                     # Static assets (images, icons, fonts)
+├── data/                       # Static/local data and constants
+├── features/                   # Feature-based modules
+│   ├── about/
+│   ├── admin/
+│   ├── auth/
+│   ├── bot/
+│   ├── cart/
+│   ├── contact/
+│   ├── faq/
+│   ├── policy/
+│   ├── products/
+│   ├── profile/
+│   ├── returns/
+│   ├── shipping/
+│   ├── theme/
+│   └── tos/
+├── mocks/                      # MSW handlers and mock data
+├── pages/                      # Route-level page components
+├── shared/                     # Reusable components, hooks, utils
+├── stylesheets/                # Global styles and Tailwind config
+├── App.jsx
+└── main.jsx
+```
+
+## 📁 Backend Structure
+
+```
+backend/
+├── app/                        # Core application logic (Models, Controllers, Services)
+├── bootstrap/                  # App bootstrapping and service provider registration
+├── config/                     # Configuration files (database, mail, auth, etc.)
+├── database/                   # Migrations, seeders, and factories
+├── public/                     # Publicly accessible entry point (index.php, assets)
+├── resources/                  # Views and raw assets (if any)
+├── routes/                     # API and web route definitions
+├── storage/                    # Logs, cache, and uploaded file storage
+├── tests/                      # Unit and feature tests
+├── .env.example                # Environment variable template
+├── artisan                     # Laravel CLI entry point
+├── composer.json               # PHP dependency manifest
+└── vite.config.js              # Vite config for asset bundling
+```
+
+---
+
 ## Installation
 
 ### Prerequisites
