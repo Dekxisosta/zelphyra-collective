@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 24;
 
 export function useProducts({ search, category, sort, page }) {
   const [products, setProducts] = useState([]);

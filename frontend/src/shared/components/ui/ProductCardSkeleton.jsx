@@ -1,6 +1,6 @@
 import Skeleton from "./Skeleton";
 
-export default function CardSkeleton() {
+export default function ProductCardSkeleton() {
   return (
     <div className="relative flex flex-col rounded-[12px] overflow-hidden border bg-[var(--color-surface)]"
       style={{ borderColor: "var(--color-border)" }}

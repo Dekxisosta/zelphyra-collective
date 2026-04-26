@@ -8,10 +8,10 @@ export default function CategoryCard({ category }) {
       style={{ border: "1px solid var(--color-border)" }}
     >
       <img
-        src={category.image}
-        alt={category.name}
+        src={category.image?.url}
+        alt={category.image?.alt ?? category.name}
         className="w-full h-28 object-cover transition-transform duration-300 group-hover:scale-110"
-      />
+        />
 
       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 

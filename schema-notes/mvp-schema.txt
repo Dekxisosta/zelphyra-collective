@@ -6,11 +6,8 @@ CREATE TABLE users (
     email VARCHAR(150) UNIQUE NOT NULL,
     name VARCHAR(100),
     password_hash VARCHAR(255) NOT NULL,
-    role VARCHAR(20) DEFAULT 'user',             -- user | admin
+    role VARCHAR(20) DEFAULT 'user',            -- user | admin
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
-
     -- DESIGN DECISION:
     -- Authentication is fully handled internally.
     -- Passwords must be hashed (bcrypt/argon2), never stored raw.
@@ -23,8 +20,7 @@ CREATE TABLE addresses (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    label VARCHAR(50),
-    -- Home | Office | Other
+    label VARCHAR(50),                          -- Home | Office | Other
     full_name VARCHAR(150) NOT NULL,
     phone VARCHAR(30),
     address_line1 VARCHAR(255) NOT NULL,
@@ -35,15 +31,11 @@ CREATE TABLE addresses (
     country VARCHAR(100) DEFAULT 'Philippines',
     is_default BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
-
-
     -- DESIGN DECISION:
     -- Stored separately to support multiple addresses per user.
     -- is_default flags the address pre-selected at checkout.
-    -- Address is snapshotted to orders at checkout to preserve
-    -- historical accuracy if the user edits their address later.
+    -- Address fields are snapshotted into orders at checkout to preserve
+    -- historical accuracy even if the user edits their address later.
 );
 
 -- =========================
@@ -53,11 +45,35 @@ CREATE TABLE categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(120) UNIQUE NOT NULL,
+    image_url TEXT,
+    description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     -- DESIGN DECISION:
     -- Flat category structure for MVP simplicity.
     -- No nested categories to reduce query complexity.
+    -- image_url and description added to support category cards in the frontend.
 );
+
+-- =========================
+-- PILLS
+-- =========================
+-- Defined before products since products.pill_id references this table.
+CREATE TABLE pills (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label VARCHAR(50) UNIQUE NOT NULL,          -- new | bestseller | trending | sale
+    priority INT NOT NULL DEFAULT 0,            -- lower = higher display priority
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- DESIGN DECISION:
+    -- Extracted from a flat VARCHAR column on products into a lookup table.
+    -- priority lets the frontend sort/display pills consistently without
+    -- hardcoding order in JS. Adding a new pill is an INSERT, not a migration.
+);
+
+INSERT INTO pills (label, priority) VALUES
+    ('new', 1),
+    ('bestseller', 2),
+    ('trending', 3),
+    ('sale', 4);
 
 -- =========================
 -- PRODUCTS
@@ -68,15 +84,16 @@ CREATE TABLE categories (
  * 2. sold and stock removed — normalized to product_inventory
  * 3. Dimensions and weight removed for MVP simplicity
  * 4. size introduced as ENUM for variant simplification
- * 5. discount_percent corrected to DECIMAL(5,2) to support values like 0.15 to 100.00
- * 6. pill replaced with a separate pills table with priority for frontend render
+ * 5. discount_percent corrected to DECIMAL(5,2) to support values like 0.15–100.00
+ * 6. pill replaced with pills lookup table — pill_id FK
+ * 7. pills table now defined BEFORE products to satisfy FK reference order
  */
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10,2) NOT NULL,
-    discount_percent DECIMAL(5,2) DEFAULT NULL,          -- e.g. 10.00 = 10% off
+    discount_percent DECIMAL(5,2) DEFAULT NULL,     -- e.g. 10.00 = 10% off
     brand VARCHAR(100),
     sku VARCHAR(100) UNIQUE,
     size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL,
@@ -85,37 +102,16 @@ CREATE TABLE products (
     shipping_days_min INT DEFAULT NULL,
     shipping_days_max INT DEFAULT NULL,
     pill_id INT DEFAULT NULL,
-    FOREIGN KEY (pill_id) REFERENCES pills(id)
+    FOREIGN KEY (pill_id) REFERENCES pills(id),
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES categories(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    
-    
-    
     -- DESIGN DECISION:
     -- Variants simplified to a size ENUM for MVP.
     -- shipping_days split into min/max INT for queryability.
+    -- pill_id is nullable — not all products need a badge.
 );
-
--- =========================
--- PILLS
--- =========================
-CREATE TABLE pills (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    label VARCHAR(50) UNIQUE NOT NULL,
-    -- trending | bestseller | new | sale
-    priority INT NOT NULL DEFAULT 0,
-    -- lower number = higher display priority
-    -- e.g. 1 = show first, 3 = show last
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO pills (label, priority) VALUES
-    ('new', 1),
-    ('bestseller', 2),
-    ('trending', 3),
-    ('sale', 4);
 
 -- =========================
 -- PRODUCT INVENTORY
@@ -127,9 +123,6 @@ CREATE TABLE product_inventory (
     stock INT DEFAULT 0,
     sold INT DEFAULT 0,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    
-    
-    
     -- DESIGN DECISION:
     -- Separated from products to isolate quantity tracking concerns.
     -- sold increments on order completion, stock decrements on checkout.
@@ -147,64 +140,11 @@ CREATE TABLE product_images (
     is_hover BOOLEAN DEFAULT FALSE,
     sort_order INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
-
-
     -- DESIGN DECISION:
     -- Replaces flat image/hover_image columns on products.
     -- Satisfies 1NF — no repeating groups in a single column.
     -- is_primary = main display image, is_hover = card hover effect.
     -- sort_order controls gallery sequence.
-);
-
--- =========================
--- ORDERS
--- =========================
-CREATE TABLE orders (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id UUID NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    total_amount DECIMAL(10,2) NOT NULL,
-    payment_method VARCHAR(50) DEFAULT NULL,        -- mirrors payments.method for quick reference without a JOIN
-    status VARCHAR(30) DEFAULT 'pending',           -- pending | paid | shipped | completed | cancelled
-    
-    shipping_name VARCHAR(150),
-    shipping_phone VARCHAR(30),
-    shipping_address TEXT,                          -- snapshotted from addresses at checkout
-    
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
-
-    -- DESIGN DECISION:
-    -- Orders are immutable transaction records.
-    -- Total amount stored to avoid recalculation if prices change.
-    -- Shipping fields snapshotted so address edits don't affect history.
-);
-
--- =========================
--- ORDER ITEMS
--- =========================
-CREATE TABLE order_items (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    product_name VARCHAR(255),
-    product_price DECIMAL(10,2),
-    quantity INT NOT NULL,
-    subtotal DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
-
-
-    -- DESIGN DECISION:
-    -- Implicit MANY-TO-MANY bridge between orders and products.
-    -- product_name and product_price are snapshotted to preserve
-    -- historical accuracy even if product data changes later.
 );
 
 -- =========================
@@ -216,10 +156,6 @@ CREATE TABLE cart (
     FOREIGN KEY (user_id) REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    
-    
-    
-    
     -- DESIGN DECISION:
     -- One cart per user enforced by UNIQUE on user_id.
     -- Cart persists across sessions until checkout or manual removal.
@@ -235,15 +171,58 @@ CREATE TABLE cart_items (
     FOREIGN KEY (cart_id) REFERENCES cart(id),
     FOREIGN KEY (product_id) REFERENCES products(id),
     quantity INT NOT NULL DEFAULT 1,
+    size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL,
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (cart_id, product_id)
-
-
-
+    UNIQUE (cart_id, product_id, size)
     -- DESIGN DECISION:
-    -- UNIQUE (cart_id, product_id) prevents duplicate entries.
-    -- Quantity updated in place rather than inserting duplicate rows.
+    -- size added to allow the same product in different sizes as separate
+    -- line items (e.g. 1x Shirt in M + 1x Shirt in L).
+    -- UNIQUE constraint updated to (cart_id, product_id, size) accordingly.
     -- Prices NOT snapshotted — pulled live from products at checkout.
+);
+
+-- =========================
+-- ORDERS
+-- =========================
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id UUID NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    address_id INT DEFAULT NULL,
+    FOREIGN KEY (address_id) REFERENCES addresses(id),
+    total_amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50) DEFAULT NULL,    -- mirrors payments.method for quick reference without a JOIN
+    status VARCHAR(30) DEFAULT 'pending',       -- pending | paid | shipped | completed | cancelled
+    shipping_name VARCHAR(150),
+    shipping_phone VARCHAR(30),
+    shipping_address TEXT,                      -- full address snapshotted from addresses at checkout
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- DESIGN DECISION:
+    -- address_id kept as a soft FK reference for traceability.
+    -- Shipping fields still snapshotted so address edits don't break history.
+    -- Orders are immutable transaction records.
+    -- Total amount stored to avoid recalculation if prices change later.
+);
+
+-- =========================
+-- ORDER ITEMS
+-- =========================
+CREATE TABLE order_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    product_name VARCHAR(255),
+    product_price DECIMAL(10,2),
+    size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL,
+    quantity INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- DESIGN DECISION:
+    -- Implicit MANY-TO-MANY bridge between orders and products.
+    -- product_name, product_price, and size are snapshotted to preserve
+    -- historical accuracy even if product data changes later.
 );
 
 -- =========================
@@ -254,13 +233,11 @@ CREATE TABLE payments (
     order_id INT UNIQUE NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id),
     amount DECIMAL(10,2) NOT NULL,
-    method VARCHAR(50) NOT NULL,                     -- cod | gcash | card | paypal
-    status VARCHAR(30) DEFAULT 'pending',            -- pending | completed | failed | refunded
-    transaction_ref VARCHAR(255) DEFAULT NULL,       -- external reference ID from payment gateway
+    method VARCHAR(50) NOT NULL,                    -- cod | gcash | card | paypal
+    status VARCHAR(30) DEFAULT 'pending',           -- pending | completed | failed | refunded
+    transaction_ref VARCHAR(255) DEFAULT NULL,      -- external reference ID from payment gateway
     paid_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-
     -- DESIGN DECISION:
     -- Separated from orders to cleanly isolate payment concerns.
     -- One payment per order enforced by UNIQUE on order_id.

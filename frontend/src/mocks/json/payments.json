@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "order_id": 1,
+    "amount": 898.00,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250310-00001",
+    "paid_at": "2025-03-10T10:05:00Z",
+    "created_at": "2025-03-10T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "order_id": 2,
+    "amount": 4995.00,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250318-00002",
+    "paid_at": "2025-03-18T14:32:00Z",
+    "created_at": "2025-03-18T14:30:00Z"
+  },
+  {
+    "id": 3,
+    "order_id": 3,
+    "amount": 1349.00,
+    "method": "cod",
+    "status": "pending",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-04-01T09:45:00Z"
+  },
+  {
+    "id": 4,
+    "order_id": 4,
+    "amount": 899.00,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250405-00004",
+    "paid_at": "2025-04-05T11:03:00Z",
+    "created_at": "2025-04-05T11:00:00Z"
+  }
+]

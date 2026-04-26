@@ -1,46 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react"
 
 export function useCategories() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const fetchCategories = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch("/api/products/categories")
+      if (!res.ok) throw new Error("Failed to fetch categories")
+      const data = await res.json()
+      setCategories(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const controller = new AbortController();
+    fetchCategories()
+  }, [])
 
-    async function fetchCategories() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const res = await fetch("/api/categories", {
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-
-        const data = await res.json();
-
-        setCategories(data);
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCategories();
-
-    return () => controller.abort();
-  }, []);
-
-  return {
-    categories,
-    loading,
-    error,
-  };
+  return { categories, loading, error, refetch: fetchCategories }
 }

@@ -16,7 +16,7 @@ export default function EventCard({ event, onNavigate }) {
 
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {event.tag && (
-            <span className="text-[14px] text-center italic px-2 py-1 rounded-full bg-red-500 text-white">
+            <span className="text-[14px] text-center italic px-2 py-1 rounded-full bg-[var(--color-primary)] text-white">
               {event.tag}
             </span>
           )}
@@ -31,12 +31,13 @@ export default function EventCard({ event, onNavigate }) {
           </p>
         </div>
 
-        <button
+        {/* <button
           onClick={() => onNavigate(event.link)}
-          className="absolute bottom-3 right-3 text-xs px-3 py-1.5 rounded-full bg-white text-black font-medium shadow-lg shadow-black/30 hover:scale-105 active:scale-95 hover:bg-white/90 transition-all duration-200"
+          disabled
+          className="absolute bottom-3 right-3 text-xs px-3 py-1.5 rounded-full bg-white/50 text-black/40 font-medium shadow-lg shadow-black/30 cursor-not-allowed transition-all duration-200"
         >
           View Sale →
-        </button>
+        </button> */}
       </div>
     </div>
   )

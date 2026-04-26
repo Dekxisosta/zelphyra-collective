@@ -17,7 +17,12 @@ import { DataPolicy } from "../../features/policy";
 import { TermsOfService } from "../../features/tos";
 import { ContactPage } from "../../features/contact";
 
-import { DashboardPage, ProductsAdminPage } from "../../features/admin";
+import {
+  DashboardPage, ProductsAdminPage, InventoryPage,
+  OrdersPage, PaymentsPage, SalesReportsPage,
+  CustomersPage, OrderHistoryPage
+} from "../../features/admin";
+
 import { ErrorComponent } from "../../shared";
 import { ThemeProvider } from "../../features/theme";
 
@@ -34,6 +39,7 @@ export const router = createBrowserRouter([
         </AuthProvider>
       </ThemeProvider>
     ),
+    errorElement: <ErrorComponent type="DEFAULT" />,
     children: [
       {
         element: <UserLayout />,
@@ -61,9 +67,16 @@ export const router = createBrowserRouter([
       {
         path: "admin",
         element: <AdminLayout />,
+        errorElement: <ErrorComponent type="DEFAULT" />,
         children: [
-          { index: true, element: <DashboardPage /> },
-          { path: "products", element: <ProductsAdminPage /> },
+          { index: true,              element: <DashboardPage /> },
+          { path: "products",         element: <ProductsAdminPage /> },
+          { path: "inventory",        element: <InventoryPage /> },
+          { path: "orders",           element: <OrdersPage /> },
+          { path: "payments",         element: <PaymentsPage /> },
+          { path: "reports",          element: <SalesReportsPage /> },
+          { path: "customers",        element: <CustomersPage /> },
+          { path: "order-history",    element: <OrderHistoryPage /> },
         ],
       },
     ],

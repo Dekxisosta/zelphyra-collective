@@ -22,31 +22,35 @@ const computePrice = (basePrice, discount) => {
 };
 
 export default function Card({ product }) {
-  const { final, saved } = computePrice(product.basePrice, product.discount);
-  const isSoldOut = product.stock === 0;
+  const primaryImage = product.images?.find(img => img.is_primary)?.url ?? null
+  const hoverImage   = product.images?.find(img => img.is_hover)?.url ?? null
+  const stock        = product.inventory?.stock ?? 0
+  const sold         = product.inventory?.sold ?? 0
+
+  const { final, saved } = computePrice(product.price, product.discount_percent)
+  const isSoldOut = stock === 0
 
   const resolvedPill = product.pill
     ? product.pill
     : saved
     ? { variant: "discounted", label: `${saved}% Off` }
-    : null;
+    : null
 
   return (
     <Link
       to={`/product/${slugify(product.name)}/${product.id}`}
-      className="group relative flex flex-col rounded-[12px] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg 
-      border border-[] bg-[var(--color-surface)]"
+      className="group relative flex flex-col rounded-[16px] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border bg-[var(--color-surface)]"
+      style={{ borderColor: "var(--color-border)" }}
     >
-      {/* 1. Pill Overlay */}
       {resolvedPill && (
         <div className="absolute top-2 left-2 z-20">
           <Pill {...resolvedPill} />
         </div>
       )}
 
-      <div className="relative aspect-square w-full overflow-hidden rounded-t-[12px] bg-gray-100">
+      <div className="relative aspect-square w-full overflow-hidden rounded-t-[10px] bg-gray-100">
         <img
-          src={product.image}
+          src={primaryImage}
           alt={product.name}
           loading="lazy"
           className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${
@@ -54,9 +58,9 @@ export default function Card({ product }) {
           }`}
         />
 
-        {product.hoverImage && !isSoldOut && (
+        {hoverImage && !isSoldOut && (
           <img
-            src={product.hoverImage}
+            src={hoverImage}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out"
@@ -74,23 +78,25 @@ export default function Card({ product }) {
 
       <div className="flex flex-col flex-1 p-3 gap-2">
         <div className="flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1">
+
+          {/* No stars for now since reviews are not included in the MVP */}
+          {/* <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
                 className="w-3 h-3"
                 style={{
-                  fill: i < Math.round(product.rating) ? "#facc15" : "transparent",
-                  color: i < Math.round(product.rating) ? "#facc15" : "var(--color-border)",
+                  fill: i < Math.round(product.rating ?? 0) ? "#facc15" : "transparent",
+                  color: i < Math.round(product.rating ?? 0) ? "#facc15" : "var(--color-border)",
                 }}
               />
             ))}
             <span className="ml-1" style={{ color: "var(--color-text-muted)" }}>
-              {product.rating}
+              {product.rating ?? "—"}
             </span>
-          </div>
+          </div> */}
           <span style={{ color: "var(--color-text-muted)" }}>
-            {formatSold(product.sold)} sold
+            {formatSold(sold)} sold
           </span>
         </div>
 
@@ -108,14 +114,14 @@ export default function Card({ product }) {
         >
           <div className="flex flex-col">
             <span className="text-base font-bold" style={{ color: "#ee4d2d" }}>
-              ${final.toFixed(2)}
+              ₱{final.toFixed(2)}
             </span>
             {saved && (
               <span
                 className="text-xs line-through leading-none"
                 style={{ color: "var(--color-text-muted)" }}
               >
-                ${product.basePrice.toFixed(2)}
+                ₱{product.price.toFixed(2)}
               </span>
             )}
           </div>
@@ -123,11 +129,10 @@ export default function Card({ product }) {
           <button
             disabled={isSoldOut}
             onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (isSoldOut) return;
+              e.preventDefault()
+              e.stopPropagation()
+              if (isSoldOut) return
             }}
-            // Replaced rounded-xl with explicit 10px rounding
             className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-[10px] transition-all duration-200 active:scale-95 text-white ${
               isSoldOut
                 ? "bg-gray-400 cursor-not-allowed"
@@ -140,5 +145,5 @@ export default function Card({ product }) {
         </div>
       </div>
     </Link>
-  );
+  )
 }

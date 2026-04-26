@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Hero, Perks, EventsCarousel, CategoryCarousel, Featured, Testimonials } from "./sections";
-import { Background } from "../shared";
 import { Divider } from "./layouts";
 import { ErrorComponent, RetryComponent } from "../shared";
 
@@ -29,7 +28,6 @@ export default function Home() {
 
         <Divider />
         <Testimonials />
-        <Background />
       </Suspense>
     </ErrorBoundary>
   );

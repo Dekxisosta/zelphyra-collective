@@ -1,6 +1,6 @@
 :root {
   --color-primary: #ec9728;
-  --color-primary-hover: #be123c;
+  --color-primary-hover: #6e430a;
 
   --color-bg: #fafaf9;
   --color-surface: #f0e3cd;
@@ -15,7 +15,7 @@
 
 [data-theme="dark"] {
   --color-primary: #ec9728;
-  --color-primary-hover: #be123c;
+  --color-primary-hover: #6e430a;
 
   --color-bg: #0f0f12;
   --color-surface: #000000;

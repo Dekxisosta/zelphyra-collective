@@ -1,0 +1,8 @@
+[
+  { "id": 1, "category_id": 1, "url": "https://picsum.photos/seed/manga/400/300",       "alt": "Manga" },
+  { "id": 2, "category_id": 2, "url": "https://picsum.photos/seed/books/400/300",       "alt": "Books" },
+  { "id": 3, "category_id": 3, "url": "https://picsum.photos/seed/tech/400/300",        "alt": "Tech" },
+  { "id": 4, "category_id": 4, "url": "https://picsum.photos/seed/lifestyle/400/300",   "alt": "Lifestyle" },
+  { "id": 5, "category_id": 5, "url": "https://picsum.photos/seed/collectibles/400/300","alt": "Collectibles" },
+  { "id": 6, "category_id": 6, "url": "https://picsum.photos/seed/apparel/400/300",     "alt": "Apparel" }
+]

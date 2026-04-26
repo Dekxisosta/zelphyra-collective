@@ -1,25 +1,29 @@
-import { Outlet, Navigate } from "react-router-dom";
-
-const user = { role: "admin" }; // replace later with auth system
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import AdminNavbar from "../../features/admin/components/AdminNavbar";
 
 export default function AdminLayout() {
-  if (user.role !== "admin") {
-    return <Navigate to="/" replace />;
-  }
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex">
-      {/* sidebar */}
-      <aside className="w-64 border-r p-4">
-        <h2 className="font-bold">Admin Panel</h2>
-        <nav className="mt-4 space-y-2 text-sm">
-          <a href="/admin">Dashboard</a>
-          <a href="/admin/products">Products</a>
-        </nav>
-      </aside>
-
-      <main className="flex-1 p-6">
-        <Outlet />
+    <div className="h-screen overflow-hidden bg-[var(--color-bg-primary)]">
+      <AdminNavbar 
+        isCollapsed={isCollapsed} 
+        setIsCollapsed={setIsCollapsed} 
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+      />
+      
+      <main
+        className={`h-screen overflow-y-auto transition-all duration-300 
+          ml-0 
+          ${isCollapsed ? "md:ml-[60px]" : "md:ml-[220px]"}
+        `}
+      >
+        <div className="min-h-full px-8 py-10">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

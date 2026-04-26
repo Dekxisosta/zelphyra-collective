@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-import { Chip, SkeletonGrid, CategoryPills, Pagination } from "../components";
-import { useProducts, ErrorComponent, ProductCard } from "../../../shared";
-import { slugify, useProductFilters } from "../../../shared";
+import { Chip, CategoryPills, Pagination } from "../components";
+import { useProducts, ProductCard, RetryComponent, EmptyComponent } from "../../../shared";
+import { useCategories, slugify, useProductFilters, ProductCardSkeleton} from "../../../shared";
 
 export default function ProductListPage() {
   const navigate = useNavigate();
-  
+
   const {
     search,
     category,
@@ -17,26 +17,18 @@ export default function ProductListPage() {
     updateFilter,
   } = useProductFilters();
 
-  const { products, categories, totalPages, loading, error } = useProducts({
-    search,
-    category,
-    sort,
-    page,
-  });
-
-  if (loading) return <SkeletonGrid />;
-
-  if (error) {
-    return <ErrorComponent type="" />;
-  }
+  const { products, totalPages, loading, error, refetch } = useProducts({ search, category, sort, page });
+  const { categories } = useCategories();
 
   return (
     <div className="container space-y-5 py-6">
 
       {/* HEADER */}
       <div>
-        <h1 style={{ fontSize: "1.75rem" }}>Products</h1>
-        <p style={{ marginTop: "0.25rem" }}>Browse, filter, and discover products</p>
+        <h1 style={{ fontSize: "1.75rem", color: "var(--color-text)" }}>Products</h1>
+        <p style={{ marginTop: "0.25rem", color: "var(--color-text-muted)" }}>
+          Browse, filter, and discover products
+        </p>
       </div>
 
       {/* SEARCH + SORT */}
@@ -103,39 +95,44 @@ export default function ProductListPage() {
         </div>
       )}
 
-      {/* GRID */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <Card
-            key={product.id}
-            product={product}
-            onClick={() =>
-              navigate(`/product/${slugify(product.name)}/${product.id}`)
-            }
-          />
-        ))}
-      </div>
-
-      {/* EMPTY */}
-      {products.length === 0 && (
-        <div
-          style={{
-            textAlign: "center",
-            padding: "3rem 0",
-            color: "var(--color-text-muted)",
-            fontSize: "0.9rem",
-          }}
-        >
-          No products found.
+      {/* STATES */}
+      {loading ? (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
         </div>
-      )}
+      ) : error ? (
+        <RetryComponent errorType="FETCH_ERROR" onRetry={refetch} />
+      ) : products.length === 0 ? (
+        <EmptyComponent
+          title="No products found"
+          message="Try adjusting your search or filters."
+        />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {products.map((product, index) => (
+              
+              <ProductCard
+                key={product.id}
+                product={product}
+                style={{
+                  animation: "fadeUp 0.3s ease forwards",
+                  animationDelay: `${index * 30}ms`,
+                  opacity: 0,
+                }}
+              />
+            ))}
+          </div>
 
-      {/* PAGINATION */}
-      <Pagination
-        totalPages={totalPages}
-        currentPage={page}
-        onChange={(p) => updateFilter("page", p)}
-      />
+          <Pagination
+            totalPages={totalPages}
+            currentPage={page}
+            onChange={(p) => updateFilter("page", p)}
+          />
+        </>
+      )}
 
     </div>
   );

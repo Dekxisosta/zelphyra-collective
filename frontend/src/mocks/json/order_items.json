@@ -1,0 +1,422 @@
+[
+  {
+    "id": 1,
+    "order_id": 1,
+    "product_id": 1,
+    "product_name": "Jujutsu Kaisen Vol. 1",
+    "product_price": 350.00,
+    "quantity": 1,
+    "subtotal": 350.00,
+    "created_at": "2025-03-10T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "order_id": 1,
+    "product_id": 2,
+    "product_name": "Chainsaw Man Vol. 1",
+    "product_price": 315.00,
+    "quantity": 1,
+    "subtotal": 315.00,
+    "created_at": "2025-03-10T10:00:00Z"
+  },
+  {
+    "id": 3,
+    "order_id": 1,
+    "product_id": 3,
+    "product_name": "Atomic Habits",
+    "product_price": 599.00,
+    "quantity": 1,
+    "subtotal": 599.00,
+    "created_at": "2025-03-10T10:00:00Z"
+  },
+  {
+    "id": 4,
+    "order_id": 2,
+    "product_id": 4,
+    "product_name": "Logitech MX Master 3S",
+    "product_price": 4745.25,
+    "quantity": 1,
+    "subtotal": 4745.25,
+    "created_at": "2025-03-18T14:30:00Z"
+  },
+  {
+    "id": 5,
+    "order_id": 3,
+    "product_id": 1,
+    "product_name": "Jujutsu Kaisen Vol. 1",
+    "product_price": 350.00,
+    "quantity": 2,
+    "subtotal": 700.00,
+    "created_at": "2025-04-01T09:45:00Z"
+  },
+  {
+    "id": 6,
+    "order_id": 3,
+    "product_id": 5,
+    "product_name": "Zenless Collective Tote Bag",
+    "product_price": 450.00,
+    "quantity": 1,
+    "subtotal": 450.00,
+    "created_at": "2025-04-01T09:45:00Z"
+  },
+  {
+    "id": 7,
+    "order_id": 4,
+    "product_id": 6,
+    "product_name": "ZZZ Collector's Standee — Belle",
+    "product_price": 899.00,
+    "quantity": 1,
+    "subtotal": 899.00,
+    "created_at": "2025-04-05T11:00:00Z"
+  },
+  {
+    "id": 8,
+    "order_id": 5,
+    "product_id": 3,
+    "product_name": "Atomic Habits",
+    "product_price": 599.00,
+    "quantity": 2,
+    "subtotal": 1198.00,
+    "created_at": "2025-03-12T08:20:00Z"
+  },
+  {
+    "id": 9,
+    "order_id": 5,
+    "product_id": 7,
+    "product_name": "Samsung Galaxy Buds2 Pro",
+    "product_price": 952.00,
+    "quantity": 1,
+    "subtotal": 952.00,
+    "created_at": "2025-03-12T08:20:00Z"
+  },
+  {
+    "id": 10,
+    "order_id": 6,
+    "product_id": 2,
+    "product_name": "Chainsaw Man Vol. 1",
+    "product_price": 315.00,
+    "quantity": 1,
+    "subtotal": 315.00,
+    "created_at": "2025-03-20T16:00:00Z"
+  },
+  {
+    "id": 11,
+    "order_id": 6,
+    "product_id": 5,
+    "product_name": "Zenless Collective Tote Bag",
+    "product_price": 450.00,
+    "quantity": 1,
+    "subtotal": 450.00,
+    "created_at": "2025-03-20T16:00:00Z"
+  },
+  {
+    "id": 12,
+    "order_id": 7,
+    "product_id": 8,
+    "product_name": "Keychron K2 Mechanical Keyboard",
+    "product_price": 3799.00,
+    "quantity": 1,
+    "subtotal": 3799.00,
+    "created_at": "2025-03-22T13:15:00Z"
+  },
+  {
+    "id": 13,
+    "order_id": 8,
+    "product_id": 1,
+    "product_name": "Jujutsu Kaisen Vol. 1",
+    "product_price": 350.00,
+    "quantity": 2,
+    "subtotal": 700.00,
+    "created_at": "2025-03-28T10:30:00Z"
+  },
+  {
+    "id": 14,
+    "order_id": 8,
+    "product_id": 6,
+    "product_name": "ZZZ Collector's Standee — Belle",
+    "product_price": 500.00,
+    "quantity": 1,
+    "subtotal": 500.00,
+    "created_at": "2025-03-28T10:30:00Z"
+  },
+  {
+    "id": 15,
+    "order_id": 9,
+    "product_id": 4,
+    "product_name": "Logitech MX Master 3S",
+    "product_price": 4500.00,
+    "quantity": 1,
+    "subtotal": 4500.00,
+    "created_at": "2025-03-30T09:00:00Z"
+  },
+  {
+    "id": 16,
+    "order_id": 10,
+    "product_id": 9,
+    "product_name": "Apple Watch SE Gen 2",
+    "product_price": 750.00,
+    "quantity": 1,
+    "subtotal": 750.00,
+    "created_at": "2025-04-06T14:00:00Z"
+  },
+  {
+    "id": 17,
+    "order_id": 11,
+    "product_id": 5,
+    "product_name": "Zenless Collective Tote Bag",
+    "product_price": 450.00,
+    "quantity": 2,
+    "subtotal": 900.00,
+    "created_at": "2025-04-07T09:30:00Z"
+  },
+  {
+    "id": 18,
+    "order_id": 11,
+    "product_id": 2,
+    "product_name": "Chainsaw Man Vol. 1",
+    "product_price": 315.00,
+    "quantity": 3,
+    "subtotal": 945.00,
+    "created_at": "2025-04-07T09:30:00Z"
+  },
+  {
+    "id": 19,
+    "order_id": 12,
+    "product_id": 10,
+    "product_name": "Ergonomic Desk Lamp",
+    "product_price": 1200.00,
+    "quantity": 1,
+    "subtotal": 1200.00,
+    "created_at": "2025-04-02T11:45:00Z"
+  },
+  {
+    "id": 20,
+    "order_id": 12,
+    "product_id": 8,
+    "product_name": "Keychron K2 Mechanical Keyboard",
+    "product_price": 3799.00,
+    "quantity": 1,
+    "subtotal": 3799.00,
+    "created_at": "2025-04-02T11:45:00Z"
+  },
+  {
+    "id": 21,
+    "order_id": 12,
+    "product_id": 3,
+    "product_name": "Atomic Habits",
+    "product_price": 599.00,
+    "quantity": 1,
+    "subtotal": 599.00,
+    "created_at": "2025-04-02T11:45:00Z"
+  },
+  {
+    "id": 22,
+    "order_id": 13,
+    "product_id": 1,
+    "product_name": "Jujutsu Kaisen Vol. 1",
+    "product_price": 350.00,
+    "quantity": 1,
+    "subtotal": 350.00,
+    "created_at": "2025-03-15T07:00:00Z"
+  },
+  {
+    "id": 23,
+    "order_id": 13,
+    "product_id": 7,
+    "product_name": "Samsung Galaxy Buds2 Pro",
+    "product_price": 149.00,
+    "quantity": 1,
+    "subtotal": 149.00,
+    "created_at": "2025-03-15T07:00:00Z"
+  },
+  {
+    "id": 24,
+    "order_id": 14,
+    "product_id": 11,
+    "product_name": "Spy x Family Vol. 1",
+    "product_price": 299.00,
+    "quantity": 2,
+    "subtotal": 598.00,
+    "created_at": "2025-04-04T15:20:00Z"
+  },
+  {
+    "id": 25,
+    "order_id": 14,
+    "product_id": 9,
+    "product_name": "Apple Watch SE Gen 2",
+    "product_price": 2392.00,
+    "quantity": 1,
+    "subtotal": 2392.00,
+    "created_at": "2025-04-04T15:20:00Z"
+  },
+  {
+    "id": 26,
+    "order_id": 15,
+    "product_id": 4,
+    "product_name": "Logitech MX Master 3S",
+    "product_price": 3150.00,
+    "quantity": 1,
+    "subtotal": 3150.00,
+    "created_at": "2025-03-25T12:00:00Z"
+  },
+  {
+    "id": 27,
+    "order_id": 16,
+    "product_id": 12,
+    "product_name": "Sony WH-1000XM5",
+    "product_price": 1099.00,
+    "quantity": 1,
+    "subtotal": 1099.00,
+    "created_at": "2025-04-08T10:10:00Z"
+  },
+  {
+    "id": 28,
+    "order_id": 17,
+    "product_id": 13,
+    "product_name": "Muji Notebook Set",
+    "product_price": 450.00,
+    "quantity": 2,
+    "subtotal": 900.00,
+    "created_at": "2025-03-08T08:45:00Z"
+  },
+  {
+    "id": 29,
+    "order_id": 17,
+    "product_id": 14,
+    "product_name": "iPhone 15 Case Bundle",
+    "product_price": 599.00,
+    "quantity": 1,
+    "subtotal": 599.00,
+    "created_at": "2025-03-08T08:45:00Z"
+  },
+  {
+    "id": 30,
+    "order_id": 17,
+    "product_id": 8,
+    "product_name": "Keychron K2 Mechanical Keyboard",
+    "product_price": 3799.00,
+    "quantity": 1,
+    "subtotal": 3799.00,
+    "created_at": "2025-03-08T08:45:00Z"
+  },
+  {
+    "id": 31,
+    "order_id": 17,
+    "product_id": 5,
+    "product_name": "Zenless Collective Tote Bag",
+    "product_price": 450.00,
+    "quantity": 3,
+    "subtotal": 1350.00,
+    "created_at": "2025-03-08T08:45:00Z"
+  },
+  {
+    "id": 32,
+    "order_id": 18,
+    "product_id": 15,
+    "product_name": "Demon Slayer Vol. 1",
+    "product_price": 325.00,
+    "quantity": 1,
+    "subtotal": 325.00,
+    "created_at": "2025-04-09T16:30:00Z"
+  },
+  {
+    "id": 33,
+    "order_id": 19,
+    "product_id": 3,
+    "product_name": "Atomic Habits",
+    "product_price": 599.00,
+    "quantity": 1,
+    "subtotal": 599.00,
+    "created_at": "2025-04-03T13:00:00Z"
+  },
+  {
+    "id": 34,
+    "order_id": 19,
+    "product_id": 6,
+    "product_name": "ZZZ Collector's Standee — Belle",
+    "product_price": 899.00,
+    "quantity": 1,
+    "subtotal": 899.00,
+    "created_at": "2025-04-03T13:00:00Z"
+  },
+  {
+    "id": 35,
+    "order_id": 20,
+    "product_id": 9,
+    "product_name": "Apple Watch SE Gen 2",
+    "product_price": 2700.00,
+    "quantity": 2,
+    "subtotal": 5400.00,
+    "created_at": "2025-03-05T09:15:00Z"
+  },
+  {
+    "id": 36,
+    "order_id": 21,
+    "product_id": 2,
+    "product_name": "Chainsaw Man Vol. 1",
+    "product_price": 315.00,
+    "quantity": 1,
+    "subtotal": 315.00,
+    "created_at": "2025-03-17T11:30:00Z"
+  },
+  {
+    "id": 37,
+    "order_id": 21,
+    "product_id": 13,
+    "product_name": "Muji Notebook Set",
+    "product_price": 450.00,
+    "quantity": 1,
+    "subtotal": 450.00,
+    "created_at": "2025-03-17T11:30:00Z"
+  },
+  {
+    "id": 38,
+    "order_id": 22,
+    "product_id": 10,
+    "product_name": "Ergonomic Desk Lamp",
+    "product_price": 1100.00,
+    "quantity": 2,
+    "subtotal": 2200.00,
+    "created_at": "2025-04-10T08:00:00Z"
+  },
+  {
+    "id": 39,
+    "order_id": 23,
+    "product_id": 11,
+    "product_name": "Spy x Family Vol. 1",
+    "product_price": 299.00,
+    "quantity": 1,
+    "subtotal": 299.00,
+    "created_at": "2025-03-14T14:00:00Z"
+  },
+  {
+    "id": 40,
+    "order_id": 23,
+    "product_id": 5,
+    "product_name": "Zenless Collective Tote Bag",
+    "product_price": 450.00,
+    "quantity": 1,
+    "subtotal": 450.00,
+    "created_at": "2025-03-14T14:00:00Z"
+  },
+  {
+    "id": 41,
+    "order_id": 23,
+    "product_id": 7,
+    "product_name": "Samsung Galaxy Buds2 Pro",
+    "product_price": 201.00,
+    "quantity": 1,
+    "subtotal": 201.00,
+    "created_at": "2025-03-14T14:00:00Z"
+  },
+  {
+    "id": 42,
+    "order_id": 24,
+    "product_id": 12,
+    "product_name": "Sony WH-1000XM5",
+    "product_price": 2050.00,
+    "quantity": 2,
+    "subtotal": 4100.00,
+    "created_at": "2025-04-05T17:00:00Z"
+  }
+]

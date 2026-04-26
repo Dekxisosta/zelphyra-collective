@@ -50,23 +50,28 @@ export default function Hero() {
           <div className="flex gap-4 mt-8">
             <Link
               to="/products"
-              className="px-6 py-3 font-semibold text-white hover:opacity-90 transition"
+              className="px-6 py-3 font-semibold text-white transition"
               style={{
                 backgroundColor: "var(--color-primary)",
                 borderRadius: "var(--radius)",
               }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--color-primary-hover)"}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "var(--color-primary)"}
             >
               Shop Now
             </Link>
 
             <Link
               to="/about"
-              className="px-6 py-3 font-semibold transition hover:bg-white/10"
+              className="px-6 py-3 font-semibold transition"
               style={{
                 color: "var(--color-text)",
+                background: "rgba(0, 0, 0, 0.08)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius)",
               }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.81)"}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.08)"}
             >
               About the collective →
             </Link>

@@ -25,12 +25,6 @@ export default function Navbar() {
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
     const handleClickOutside = (e) => {
       if (
         menuRef.current &&
@@ -111,7 +105,7 @@ export default function Navbar() {
 
       {/* ── MAIN BAR ── */}
       <div
-        className={`transition-all duration-300 ${scrolled ? "py-2" : "py-4"}`}
+        className="py-3"
         style={{
           backdropFilter: "blur(16px)",
           backgroundColor: "var(--color-surface)",

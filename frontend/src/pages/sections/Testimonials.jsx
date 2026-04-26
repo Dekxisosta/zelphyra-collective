@@ -1,3 +1,5 @@
+import avatars from "../../data/avatars.json";
+
 const Star = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="none">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -13,60 +15,50 @@ const Stars = ({ count = 5 }) => (
 const testimonials = [
   {
     quote: "The quality blew me away. Ordered on a Tuesday, had it by Thursday — and the packaging was immaculate. I've already recommended it to three friends.",
-    name: "Jamie M.",
-    location: "Austin, TX",
-    initials: "JM",
-    avatarBg: "#EEF2FF",
-    avatarColor: "#4F46E5",
+    name: "Anby D.",
+    location: "Quezon City, Metro Manila",
+    avatarId: 1,
   },
   {
     quote: "Customer support is the real deal. Had a small issue with my order and they resolved it within an hour — no back and forth, no hassle. Rare to see that kind of service.",
-    name: "Sofia R.",
-    location: "Chicago, IL",
-    initials: "SR",
-    avatarBg: "#F0FDF4",
-    avatarColor: "#16A34A",
+    name: "Ben A.",
+    location: "Cebu City, Cebu",
+    avatarId: 2,
   },
   {
     quote: "I was skeptical about the price match claim but they actually honored it — matched a competitor and threw in free express shipping. Won't be shopping anywhere else.",
-    name: "Daniel K.",
-    location: "Seattle, WA",
-    initials: "DK",
-    avatarBg: "#FFFBEB",
-    avatarColor: "#D97706",
+    name: "Corin V.",
+    location: "Davao City, Davao del Sur",
+    avatarId: 3,
   },
   {
     quote: "Bought three items as gifts and every single one arrived perfectly. The return process for one that wasn't quite right was genuinely painless — got the refund in two days.",
-    name: "Aisha L.",
-    location: "New York, NY",
-    initials: "AL",
-    avatarBg: "#FFF1F2",
-    avatarColor: "#E11D48",
+    name: "Ellen J.",
+    location: "Makati, Metro Manila",
+    avatarId: 4,
   },
   {
     quote: "I've been shopping here for two years now. Consistent quality, reliable delivery, and the warranty actually came through when my item had a defect six months in. Solid all around.",
-    name: "Marcus P.",
-    location: "Denver, CO",
-    initials: "MP",
-    avatarBg: "#F5F3FF",
-    avatarColor: "#7C3AED",
+    name: "Jane D.",
+    location: "Iloilo City, Iloilo",
+    avatarId: 5,
   },
   {
     quote: "Fast, secure, exactly as described. I was nervous about checking out for the first time but the whole experience felt safe and professional. Will absolutely be back.",
-    name: "Yuki T.",
-    location: "Portland, OR",
-    initials: "YT",
-    avatarBg: "#F0F9FF",
-    avatarColor: "#0284C7",
+    name: "Lycaon R.",
+    location: "Taguig, Metro Manila",
+    avatarId: 6,
   },
 ];
 
-function TestimonialCard({ quote, name, location, initials, avatarBg, avatarColor }) {
+function TestimonialCard({ quote, name, location, avatarId }) {
+  const avatar = avatars.find((a) => a.id === avatarId);
+
   return (
     <div
       style={{
         background: "var(--color-background)",
-        border: "0.5px solid var(--color-border)",
+        border: "1px solid var(--color-border)",
         borderRadius: 12,
         padding: "1.25rem",
         display: "flex",
@@ -85,26 +77,23 @@ function TestimonialCard({ quote, name, location, initials, avatarBg, avatarColo
           gap: 10,
           marginTop: "auto",
           paddingTop: 12,
-          borderTop: "0.5px solid var(--color-border)",
+          borderTop: "1px solid var(--color-border)",
+          height: "56px",
+          flexShrink: 0,
         }}
       >
-        <div
+        <img
+          src={avatar?.url}
+          alt={avatar?.label}
           style={{
             width: 32,
             height: 32,
             borderRadius: "50%",
-            background: avatarBg,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 12,
-            fontWeight: 500,
-            color: avatarColor,
+            objectFit: "cover",
             flexShrink: 0,
+            border: "1px solid var(--color-border)",
           }}
-        >
-          {initials}
-        </div>
+        />
         <div>
           <p style={{ margin: 0, fontSize: 13, fontWeight: 500, color: "var(--color-text)" }}>
             {name}

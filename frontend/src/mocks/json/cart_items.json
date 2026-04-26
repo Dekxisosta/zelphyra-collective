@@ -1,0 +1,6 @@
+[
+  { "id": 1, "cart_id": 1, "product_id": 3, "quantity": 1, "added_at": "2025-04-10T08:05:00Z" },
+  { "id": 2, "cart_id": 1, "product_id": 5, "quantity": 2, "added_at": "2025-04-10T08:10:00Z" },
+  { "id": 3, "cart_id": 2, "product_id": 6, "quantity": 1, "added_at": "2025-04-12T10:05:00Z" },
+  { "id": 4, "cart_id": 2, "product_id": 2, "quantity": 1, "added_at": "2025-04-12T10:08:00Z" }
+]

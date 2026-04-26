@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export function useNewsletter() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
 
   const subscribe = async () => {
