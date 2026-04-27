@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\ProductInventory;
+use App\Models\ProductImage;
+use App\Models\Category;
+use App\Models\Pill;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -22,4 +27,15 @@ class Product extends Model
         'pill_id',
         'category_id'
     ];
+
+    public function inventory()
+    {
+        return $this->hasOne(ProductInventory::class);
+    }
+    // One-to-many with product_images table
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
 }
