@@ -42,6 +42,8 @@ and clean UI composition with TailwindCSS and Lucide React.
 ---
 ![WebpageMockImage](/assets/images/dashboard-preview.png)
 ---
+![WebpageMockImage](/assets/images/signup-preview.png)
+---
 
 ## Contributors
 
