@@ -1,49 +1,23 @@
 import { http, HttpResponse } from "msw"
 import { getSessionUserId } from "./session"
+import usersData from "../json/users.json"
+import usersImages from "../json/user_images.json"
+import addressesData from "../json/addresses.json"
 
-const mockUsers = {
-  "a1b2c3d4-e5f6-7890-abcd-ef1234567890": {
-    id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    name: "Dekxisosta",
-    email: "admin@zenlesscollective.ph",
-    phone: "+63 912 345 6789",
-    avatar_id: 4,
-    role: "admin",
-  },
-}
+const imageByUserId = Object.fromEntries(usersImages.map(img => [img.user_id, img.avatar_id]))
 
-const mockAddressesByUser = {
-  "a1b2c3d4-e5f6-7890-abcd-ef1234567890": [
-    {
-      id: 1,
-      user_id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      label: "Home",
-      full_name: "Dekxisosta",
-      phone: "+63 912 345 6789",
-      address_line1: "123 Rizal Street",
-      address_line2: "Brgy. Poblacion",
-      city: "Cabuyao",
-      province: "Laguna",
-      zip_code: "4025",
-      country: "Philippines",
-      is_default: true,
-    },
-    {
-      id: 2,
-      user_id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-      label: "Office",
-      full_name: "Dekxisosta",
-      phone: "+63 912 345 6789",
-      address_line1: "456 EDSA Ave",
-      address_line2: "Unit 3B",
-      city: "Mandaluyong",
-      province: "Metro Manila",
-      zip_code: "1550",
-      country: "Philippines",
-      is_default: false,
-    },
-  ],
-}
+const mockUsers = Object.fromEntries(
+  usersData.map(u => {
+    const avatar_id = imageByUserId[u.id] ?? 1
+    return [u.id, { ...u, avatar_id }]
+  })
+)
+
+const mockAddressesByUser = addressesData.reduce((acc, addr) => {
+  if (!acc[addr.user_id]) acc[addr.user_id] = []
+  acc[addr.user_id].push({ ...addr })
+  return acc
+}, {})
 
 export { mockUsers }
 
@@ -85,7 +59,9 @@ export const userHandlers = [
     const body = await request.json()
     const addresses = mockAddressesByUser[user.id] ?? []
     if (body.is_default) addresses.forEach(a => { a.is_default = false })
-    const newAddress = { id: addresses.length + 1, user_id: user.id, ...body }
+    const allIds = Object.values(mockAddressesByUser).flat().map(a => a.id)
+    const newId = allIds.length ? Math.max(...allIds) + 1 : 1
+    const newAddress = { id: newId, user_id: user.id, ...body }
     addresses.push(newAddress)
     mockAddressesByUser[user.id] = addresses
     return HttpResponse.json(newAddress, { status: 201 })

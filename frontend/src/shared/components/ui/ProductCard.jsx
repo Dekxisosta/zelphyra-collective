@@ -1,7 +1,8 @@
 import { ShoppingCart, Heart } from 'lucide-react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Pill from "./Pill.jsx";
+import { useProfile } from "../../../features/profile";
 
 const slugify = (text) =>
   text
@@ -23,25 +24,38 @@ const computePrice = (basePrice, discount) => {
 };
 
 const getStockStatus = (stock) => {
-  if (stock === 0)  return { label: "Sold out",       color: "var(--color-text-subtle)" }
-  if (stock <= 5)   return { label: `Last ${stock}!`, color: "var(--color-danger)" }
-  if (stock <= 20)  return { label: "Low stock",      color: "var(--color-warning)" }
-  return null
-}
+  if (stock === 0)  return { label: "Sold out",       color: "var(--color-text-subtle)" };
+  if (stock <= 5)   return { label: `Last ${stock}!`, color: "var(--color-danger)" };
+  if (stock <= 20)  return { label: "Low stock",      color: "var(--color-warning)" };
+  return null;
+};
 
 export default function Card({ product }) {
-  const [wished, setWished] = useState(false)
+  const [wished, setWished] = useState(false);
+  const { profile } = useProfile();
+  const navigate = useNavigate();
 
-  const primaryImage = product.images?.find(img => img.is_primary)?.url ?? null
-  const hoverImage   = product.images?.find(img => img.is_hover)?.url ?? null
-  const stock        = product.inventory?.stock ?? 0
-  const sold         = product.inventory?.sold ?? 0
+  const primaryImage = product.images?.find(img => img.is_primary)?.url ?? null;
+  const hoverImage   = product.images?.find(img => img.is_hover)?.url ?? null;
+  const stock        = product.inventory?.stock ?? 0;
+  const sold         = product.inventory?.sold ?? 0;
 
-  const { final, saved } = computePrice(product.price, product.discount_percent)
-  const isSoldOut = stock === 0
-  const stockStatus = getStockStatus(stock)
+  const { final, saved } = computePrice(product.price, product.discount_percent);
+  const isSoldOut = stock === 0;
+  const stockStatus = getStockStatus(stock);
 
-  const resolvedPill = product.pill ?? null
+  const resolvedPill = product.pill ?? null;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isSoldOut) return;
+    if (!profile) {
+      navigate("/login");
+      return;
+    }
+    
+  };
 
   return (
     <Link
@@ -182,9 +196,9 @@ export default function Card({ product }) {
           >
             <button
               onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setWished(w => !w)
+                e.preventDefault();
+                e.stopPropagation();
+                setWished(w => !w);
               }}
               className="flex items-center justify-center transition-all duration-200 active:scale-90"
               style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
@@ -235,11 +249,7 @@ export default function Card({ product }) {
           <div className="flex items-center gap-2">
             <button
               disabled={isSoldOut}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                if (isSoldOut) return
-              }}
+              onClick={handleAddToCart}
               className={`flex items-center gap-1.5 text-xs font-bold transition-all duration-200 active:scale-95 ${
                 isSoldOut ? "cursor-not-allowed" : "hover:brightness-110"
               }`}
@@ -269,5 +279,5 @@ export default function Card({ product }) {
 
       </div>
     </Link>
-  )
+  );
 }

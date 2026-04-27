@@ -88,36 +88,51 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* ACTIONS — bottom of header*/}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            {user?.role === "admin" && (
-              <button
-                onClick={() => navigate("/admin")}
-                className="md:min-w-60 flex items-center justify-center gap-1.5 rounded-xl px-6 py-2 text-sm font-semibold"
-                style={{
-                  background: "color-mix(in srgb, var(--color-primary) 15%, transparent)",
-                  color: "var(--color-primary)",
-                  border: "1px solid color-mix(in srgb, var(--color-primary) 35%, transparent)",
-                  cursor: "pointer",
-                }}
-              >
-                <ShieldCheck size={15} />
-                Admin
-              </button>
-            )}
-            <button
-              className="flex sm:flex-none items-center justify-center gap-1.5 rounded-xl px-15 py-2 text-sm font-semibold"
-              style={{ backgroundColor: "var(--color-primary)", color: "#fff", cursor: "pointer" }}
-            >
-              <ShoppingCart size={15} /> Cart
-            </button>
-            <button
-              className="flex sm:flex-none items-center justify-center gap-1.5 rounded-xl px-15 py-2 text-sm font-semibold"
-              style={{ backgroundColor: "var(--color-bg-soft)", color: "var(--color-text)", cursor: "pointer" }}
-            >
-              <Heart size={15} /> Wishlist
-            </button>
-          </div>
+          <div className="flex flex-wrap items-center gap-2">
+  {user?.role === "admin" && (
+    <button
+      onClick={() => navigate("/admin")}
+      className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium transition-colors"
+      style={{
+        background: "color-mix(in srgb, var(--color-primary) 12%, transparent)",
+        color: "var(--color-primary)",
+        border: "0.5px solid color-mix(in srgb, var(--color-primary) 30%, transparent)",
+      }}
+    >
+      <ShieldCheck size={14} />
+      Admin
+    </button>
+  )}
+
+    <div className="flex items-center gap-1.5 ml-auto">
+      <button
+        onClick={() => navigate("/wishlist")}
+        className="relative flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium transition-colors"
+        style={{
+          background: "var(--color-bg-soft)",
+          color: "var(--color-text-muted)",
+          border: "0.5px solid var(--color-border)",
+        }}
+      >
+        <Heart size={14} />
+        Wishlist
+          <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-semibold">
+          </span>
+      </button>
+
+      <button
+        onClick={() => navigate("/cart")}
+        className="flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium transition-opacity hover:opacity-90"
+        style={{ background: "var(--color-primary)", color: "#fff", border: "none" }}
+      >
+        <ShoppingCart size={14} />
+        Cart
+          <span className="flex items-center justify-center px-1.5 rounded-full text-[11px] font-semibold"
+            style={{ background: "rgba(255,255,255,0.25)" }}>
+          </span>
+      </button>
+    </div>
+  </div>
         </div>
 
         <Section title="Personal Information">

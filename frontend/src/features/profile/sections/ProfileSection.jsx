@@ -39,7 +39,7 @@ export default function ProfileSection({ profile, onUpdate }) {
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.875rem" }}>
         <Field label="Full Name"     name="name"  value={form.name}  onChange={handleChange} />
-        <Field label="Email Address" name="email" value={form.email} onChange={handleChange} type="email" />
+        <Field disabled={true} label="Email Address" name="email" value={form.email} onChange={handleChange} type="email" />
         <Field label="Phone Number"  name="phone" value={form.phone} onChange={handleChange} type="tel" />
       </div>
       <div className="flex items-center gap-3">

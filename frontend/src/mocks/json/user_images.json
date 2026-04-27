@@ -19,5 +19,6 @@
   { "id": 18, "user_id": "a9b0c1d2-e3f4-5678-abcd-789012345678", "avatar_id": 5 },
   { "id": 19, "user_id": "b0c1d2e3-f4a5-6789-bcde-890123456789", "avatar_id": 3 },
   { "id": 20, "user_id": "c1d2e3f4-a5b6-7890-cdef-901234567890", "avatar_id": 7 },
-  { "id": 21, "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "avatar_id": 4 }
+  { "id": 21, "user_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "avatar_id": 4 },
+  { "id": 22, "user_id": "b4b2c3y7-e5f6-7890-abcd-ef1234567890", "avatar_id": 11 }
 ]

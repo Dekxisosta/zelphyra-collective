@@ -12,13 +12,13 @@ export const inputStyle = {
 
 export const selectStyle = { ...inputStyle, cursor: "pointer" }
 
-export function Field({ label, name, value, onChange, type = "text" }) {
+export function Field({ label, name, value, onChange, type = "text", disabled = false }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
       <label style={{ color: "var(--color-text-muted)", fontSize: "0.72rem", fontWeight: 600 }}>
         {label}
       </label>
-      <input type={type} name={name} value={value} onChange={onChange} style={inputStyle} />
+      <input type={type} name={name} value={value} onChange={onChange} disabled={disabled} style={{ ...inputStyle, ...(disabled && { opacity: 0.5, cursor: "not-allowed", pointerEvents: "none" }) }} />
     </div>
   )
 }
