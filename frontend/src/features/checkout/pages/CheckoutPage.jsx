@@ -54,7 +54,7 @@ function OrderConfirmed({ order, payment, onContinue }) {
         <div className="flex justify-between">
           <span style={{ color: "var(--color-text-muted)" }}>Amount</span>
           <span className="font-bold" style={{ color: "var(--color-primary)" }}>
-            ₱{order.total_amount.toFixed(2)}
+            ₱{order.total.toFixed(2)}
           </span>
         </div>
         <div className="flex justify-between">
