@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->enum('size', ['XS', 'S', 'M', 'L', 'XL', 'XXL'])->default(null)->nullable();
             $table->timestamp('added_at')->useCurrent();
+            $table->timestamps();
             $table->unique(['cart_id', 'product_id', 'size']);
         });
     }

@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 
     //? Middleware RUNS before the code, before controller, model, api calling etc...
+    
     //? Sets up the session system for API routes -> saves the session in the session db table
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn() => null);
@@ -31,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: ['api/*']);
     })
     
-    //? 
+    //? withExceptions -> catches general problems before reaching the models, controllers, etc..  
     ->withExceptions(function (Exceptions $exceptions): void {
     //? Handles auth errors 
     $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {

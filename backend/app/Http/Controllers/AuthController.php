@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+
     //  Function (POST API) sends data to zelphyra_db (register a user)
     public function register(Request $request)
     {
@@ -26,6 +27,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 //? bcrypt() Automatically hashes the password, a built in function
+                'role' => 'user',
                 'password' => bcrypt($request->password)
             ]);
             return response()->json(['message' => 'User registered successfully!!'], 201);
@@ -60,8 +62,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
+            
             Auth::guard('web')->logout();
-
             //* completely destroys session from db
             $request->session()->invalidate();
             //* Avoids getting -> Hacker has your CSRF token → you log out → hacker uses your old CSRF token to send fake requests → BAD!! 

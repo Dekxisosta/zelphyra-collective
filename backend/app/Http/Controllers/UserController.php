@@ -24,13 +24,13 @@ class UserController extends Controller
         try{
             //? gets the copied id from session to look up from database -> finally getting its Eloquent model.
             $user = User::find(Auth::id());
-            
+
             //? updates the user profile, built-in 
             $user->update([
                 'name' => $request->name ?? $user->name,
                 'password' => $request->password? bcrypt($request->password) : $user->password
             ]);
-        
+
             return response()->json(['message'=> 'Profile updated successfully.'], 200);
         }catch(\Exception $e){
             return response()->json(['message' => $e->getMessage()], 500);
